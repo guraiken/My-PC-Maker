@@ -9,9 +9,11 @@ Aplicativo que auxilia na montagem de PCs, fornecendo informações sobre compon
 - Comunidade para compartilhar, avaliar e comentar builds.
 - Visualização e busca de builds criados por usuários.
 
-## Tecnologias
+## Ferramentas
+- **VS Code, Git, Github**
 
-*(Preencha conforme seu stack real)*
+
+## Tecnologias
 
 - **Frontend**: React
 - **Backend**: Node.js
