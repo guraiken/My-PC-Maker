@@ -1,2 +1,28 @@
-# My-PC-Maker
-Site que auxilia na montagem de PCs, com informações sobre as peças, watts necessários e uma comunidade que ajudará e recomendará peças, builds de PC, postagens de builds com avaliações e comentários.
+# My‑PC‑Maker
+
+Aplicativo que auxilia na montagem de PCs, fornecendo informações sobre componentes (como consumo de energia), além de contar com uma comunidade para recomendações, compartilhamento de builds, avaliações e comentários.
+
+## Funcionalidades
+
+- Recomendação de componentes ideais para diferentes perfis (gamer, trabalho, edição, etc.).
+- Estimativa de consumo de energia (watts) para cada build.
+- Comunidade para compartilhar, avaliar e comentar builds.
+- Visualização e busca de builds criados por usuários.
+
+## Tecnologias
+
+*(Preencha conforme seu stack real)*
+
+- **Frontend**: React
+- **Backend**: Node.js
+- **Banco de dados**: MySQL
+- **Autenticação**: ?
+- **Deploy**: Vercel
+
+## Instalação
+
+```bash
+git clone https://github.com/guraiken/My-PC-Maker.git
+cd My‑PC‑Maker
+npm install
+npm run dev
