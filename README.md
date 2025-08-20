@@ -21,6 +21,11 @@ Aplicativo que auxilia na montagem de PCs, fornecendo informações sobre compon
 - **Autenticação**: ?
 - **Deploy**: Vercel
 
+## EQUIPE: 
+Gustavo(https://github.com/guraiken)
+Gabriel Lessa(https://github.com/Neko-stack)
+José Antônio(https://github.com/piercezeveil)
+
 ## Instalação
 
 ```bash
