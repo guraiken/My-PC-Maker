@@ -25,9 +25,9 @@ Aplicativo que auxilia na montagem de PCs, fornecendo informações sobre compon
 - **[Gustavo](https://github.com/guraiken)**
 - **[Gabriel Lessa](https://github.com/Neko-stack)** 
 - **[José Antônio](https://github.com/piercezeveil)** 
-![guraiken](https://avatars.githubusercontent.com/u/203922917?v=4)
-![Neko-stack](https://avatars.githubusercontent.com/u/203922083?v=4)
-![pircezeveil](https://avatars.githubusercontent.com/u/203923246?v=4)
+<img src="https://avatars.githubusercontent.com/u/203922917?v=4" width="150"/>
+<img src="https://avatars.githubusercontent.com/u/203922083?v=4" width="150"/>
+<img src="https://avatars.githubusercontent.com/u/203923246?v=4" width="150"/>
 
 ## Instalação
 
