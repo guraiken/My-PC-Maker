@@ -22,9 +22,9 @@ Aplicativo que auxilia na montagem de PCs, fornecendo informações sobre compon
 - **Deploy**: Vercel
 
 ## EQUIPE: 
-- **[Gustavo](https://github.com/guraiken)**
-- **[Gabriel Lessa](https://github.com/Neko-stack)**
-- **[José Antônio](https://github.com/piercezeveil)* <img source="https://avatars.githubusercontent.com/u/203923246?v=4" height="24px" width="24px"></img>
+- **[Gustavo](https://github.com/guraiken)** <img source="[https://avatars.githubusercontent.com/u/203923246?v=4](https://avatars.githubusercontent.com/u/203922917?v=4)" height="36px" width="36px"></img>
+- **[Gabriel Lessa](https://github.com/Neko-stack)** <img source="https://avatars.githubusercontent.com/u/203922083?v=4" height="36px" width="36px"></img>
+- **[José Antônio](https://github.com/piercezeveil)** <img source="https://avatars.githubusercontent.com/u/203923246?v=4" height="36px" width="36px"></img>
 
 ## Instalação
 
