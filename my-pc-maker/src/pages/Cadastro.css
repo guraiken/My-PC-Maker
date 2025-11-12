@@ -38,10 +38,9 @@
                 width: 100%;
                 justify-content: center;
                 align-items: center;
-                gap: 10px;
 
                 font-family: "k2d";
-                font-size: 20px;
+                font-size: 1.1rem;
                 color: var(--texto-principal);
             }
             .cadastro-left-span {

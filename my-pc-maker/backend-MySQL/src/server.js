@@ -7,7 +7,7 @@ const app = express();
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',      // Altere para o nome do seu user no MySQL
-    password: process.env.SENHA,    // Altere para a senha correta
+    password: "senai",    // Altere para a senha correta
     database: 'mpcm',
     waitForConnections: true,
     connectionLimit: 10,
@@ -77,7 +77,7 @@ app.put('/usuario/:id', async (req, res) => {
     const { nome, senha, email,  } = req.body;
     try {
         const [result] = await pool.query(
-            'UPDATE clientes SET nome = ?, endereco = ?, senha = ?, email = ? WHERE id_usuario = ?',
+            'UPDATE usuario SET nome = ?, endereco = ?, senha = ?, email = ? WHERE id_usuario = ?',
             [nome, senha, email, id]
         );
         if (result.affectedRows === 0) {
