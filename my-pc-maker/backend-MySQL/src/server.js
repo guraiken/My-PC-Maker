@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
+require("dotenv").config()
 
 const app = express();
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',      // Altere para o nome do seu user no MySQL
-    password: 'senai',    // Altere para a senha correta
+    password: process.env.SENHA,    // Altere para a senha correta
     database: 'mpcm',
     waitForConnections: true,
     connectionLimit: 10,
