@@ -25,12 +25,10 @@ Aplicativo que auxilia na montagem de PCs, fornecendo informações sobre compon
 <p align="center">
 <img src="https://avatars.githubusercontent.com/u/203922917?v=4" width="150"/>
 <img src="https://avatars.githubusercontent.com/u/203922083?v=4" width="150"/>
-<img src="https://avatars.githubusercontent.com/u/203923246?v=4" width="150"/>
 </p>
 
 - **[Gustavo](https://github.com/guraiken)**
 - **[Gabriel Lessa](https://github.com/Neko-stack)** 
-- **[José Antônio](https://github.com/piercezeveil)**
 
 ## Instalação
 
