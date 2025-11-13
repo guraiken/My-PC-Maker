@@ -29,6 +29,7 @@ app.get('/usuario', async (req, res) => {
 
 app.get('/usuario/:email', async (req, res) => {
     const {email} = req.params
+    console.log(req.params)
     try {
         const [rows] = await pool.query('SELECT * FROM usuario WHERE email = ?', [email]);
         res.json(rows[0]);

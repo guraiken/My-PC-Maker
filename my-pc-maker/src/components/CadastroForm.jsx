@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import "./CadastroForm.css"
+import { GlobalContext } from "../contexts/globalContext"
 
 function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     const [mostrarSenha, setMostrarSenha] = useState()
@@ -9,6 +10,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     const [senhaInput, setSenhaInput] = useState()
     
     const [usuarios, setUsuarios] = useState([])
+    const {usuarioLogado, setUsuarioLogado} = useContext(GlobalContext)
 
     function limparForm(){
         setUsuarioInput('')
@@ -41,7 +43,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                 senha: senhaInput,
                 email: emailInput
             };
-            const response = axios.post("http://localhost:3000/usuario", usuario);
+            const response = await axios.post("http://localhost:3000/usuario", usuario);
             if(response.status === 201){
                 fetchUsuarios()
                 limparForm()
@@ -50,9 +52,26 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
         catch (error){
             console.error("Erro ao adicionar usuario:", error)
         }
+    };
+
+    const logarUsuario = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/usuario/${emailInput}`)
+            console.log(response.data)
+            if(response.status === 200){
+                if(response.data.senha === senhaInput){
+                    limparForm()
+                    alert(`PARABENS ${response.data.nome} VOCE LOGO`)
+                    const logado = localStorage.getItem("usuarioLogado")
+                    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado))
+                    setUsuarioLogado(logado)
+                } 
+            }
+        }
+        catch (error){
+            console.error('Não foi possível logar no usuário:', error)
+        }
     }
-
-
     
     return (
         <div className='cadastro-form'>
@@ -62,11 +81,15 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
             </div>
 
             <div className="cadastro-form-inputs">
-                <label htmlFor="">{usuario}</label>
-                <input type="text" 
-                value={usuarioInput}
-                onChange={(e) => setUsuarioInput(e.target.value)}
-                />
+                {usuario &&
+                    <>
+                    <label htmlFor="">{usuario}</label>
+                    <input type="text" 
+                    value={usuarioInput}
+                    onChange={(e) => setUsuarioInput(e.target.value)}
+                    />
+                    </>
+                }
                 {email &&
                     <>
                     <label htmlFor="">{email}</label>
@@ -89,7 +112,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                     <button type="button" onClick={cadastrarUsuario}>{nomeButton}</button>
                     </>}
                     {titulo == "LOGIN" &&<>
-                    <button>{nomeButton}</button>
+                    <button type="button" onClick={logarUsuario}>{nomeButton}</button>
                     </>}
                 </>
                 } 

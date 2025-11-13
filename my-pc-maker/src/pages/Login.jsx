@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom"
 import CadastroForm from "../components/CadastroForm"
 import "./Login.css"
+import { useContext } from "react"
+import { GlobalContext } from "../contexts/globalContext"
 
 function Login() {
+    const {usuarioLogado} = useContext(GlobalContext)
+
   return (
     <section className="login-container">
 
@@ -15,7 +19,7 @@ function Login() {
                 <div className="login-middle-center">
                     <CadastroForm
                         titulo={"LOGIN"}
-                        usuario={"Usuário/E-mail"}
+                        email={"Usuário/E-mail"}
                         senha={"Senha"}
                         nomeButton={"LOGAR"}
                     />
@@ -33,7 +37,7 @@ function Login() {
                 <div className="login-left-texto">
                     <h1>BEM VINDO DE VOLTA!</h1>
                     <div className="login-left-span">
-                    <span>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla</span>
+                    <span>Sentimos sua falta!</span>
                     </div>
                 </div>
             </div>
