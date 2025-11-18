@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Montagem.css'; 
 
+
 const ProductCard = ({ name }) => (
   <div className="product-card">
     <div className="product-image">
@@ -13,8 +14,8 @@ const ProductCard = ({ name }) => (
 
 
 function App() {
-    const partTypes = ['SLA1', 'SLA2', 'SLA3', 'SLA4', 'SLA5', 'SLA6'];
-    const [activePart, setActivePart] = useState('SLA1');
+    const partTypes = ['Processador', 'Placa de Vídeo', 'Placa Mãe', 'Memória RAM', 'HD?', 'Fonte'];
+    const [activePart, setActivePart] = useState('Processador');
     const productData = [
       'Algum ai', 'Algum ai', 'Algum ai', 'Algum ai',
       'Algum ai', 'Algum ai', 'Algum ai', 'Algum ai',
