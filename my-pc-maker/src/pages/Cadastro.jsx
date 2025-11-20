@@ -11,7 +11,7 @@ function Cadastro() {
                 <div className="cadastro-left-texto">
                     <h1>BORA COMEÇAR!</h1>
                     <div className="cadastro-left-span">
-                    <span>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla</span>
+                    <span>Já pensou em montar suas builds e compartilhar com os outros, para ver o que pensam?</span>
                     </div>
                 </div>
             </div>

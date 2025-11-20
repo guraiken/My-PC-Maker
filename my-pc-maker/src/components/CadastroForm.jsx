@@ -2,6 +2,12 @@ import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import "./CadastroForm.css"
 import { GlobalContext } from "../contexts/globalContext"
+import { useNavigate } from "react-router-dom"
+import Swal from 'sweetalert2'
+import { FaEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+
+
 
 function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     const [mostrarSenha, setMostrarSenha] = useState()
@@ -11,6 +17,8 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     
     const [usuarios, setUsuarios] = useState([])
     const {usuarioLogado, setUsuarioLogado} = useContext(GlobalContext)
+
+    const navegar = useNavigate()
 
     function limparForm(){
         setUsuarioInput('')
@@ -47,10 +55,38 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
             if(response.status === 201){
                 fetchUsuarios()
                 limparForm()
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Usuário cadastrado com sucesso",
+                    showConfirmButton: false,
+                    background: "var(--fundo)",
+                    color: "var(--texto-principal)", 
+                    iconColor: "var(--destaque)",
+                    timer: 1200, 
+                    width: "30%",
+                    heightAuto: "20%",
+                })
+                setTimeout(() => {
+                    navegar('/login')
+                }, '1200')
             }
         }
         catch (error){
             console.error("Erro ao adicionar usuario:", error)
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Erro: 500",
+                text: "Servidor OFFLINE",
+                showConfirmButton: false,
+                background: "var(--fundo)",
+                color: "var(--texto-principal)", 
+                iconColor: "var(--destaque)",
+                timer: 1400, 
+                width: "30%",
+                heightAuto: "20%",
+            })
         }
     };
 
@@ -61,21 +97,59 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
             if(response.status === 200){
                 if(response.data.senha === senhaInput){
                     limparForm()
-                    alert(`PARABENS ${response.data.nome} VOCE LOGO`)
-                    const logado = localStorage.getItem("usuarioLogado")
-                    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado))
-                    setUsuarioLogado(logado)
-                } 
+                    const usuario = response.data
+                    localStorage.setItem("usuarioLogado", JSON.stringify(usuario))
+                    setUsuarioLogado(JSON.parse(localStorage.getItem("usuarioLogado")));
+                    Swal.fire({  
+                        position: "center",
+                        icon: "success",
+                        title: "Usuário logado com sucesso",
+                        showConfirmButton: false,
+                        background: "var(--fundo)",
+                        color: "var(--texto-principal)", 
+                        iconColor: "var(--destaque)",
+                        timer: 1200, 
+                        width: "30%",
+                        heightAuto: "20%",
+                    })
+                    setTimeout(() => {
+                        navegar('/montagem')
+                    }, '1200')
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "Erro: Verifique os dados inseridos",
+                        showConfirmButton: false,
+                        background: "var(--fundo)",
+                        color: "var(--texto-principal)", 
+                        iconColor: "var(--destaque)",
+                        timer: 1400, 
+                        width: "30%",
+                    })
+                }
             }
         }
         catch (error){
             console.error('Não foi possível logar no usuário:', error)
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Erro: 500",
+                text: "Servidor OFFLINE",
+                showConfirmButton: false,
+                background: "var(--fundo)",
+                color: "var(--texto-principal)", 
+                iconColor: "var(--destaque)",
+                timer: 1400, 
+                width: "30%",
+                heightAuto: "20%",
+            })
         }
     }
     
     return (
-        <div className='cadastro-form'>
-            
+        <form className='cadastro-form'>
             <div className="cadastro-title">
                 <h2>{titulo}</h2>
             </div>
@@ -84,7 +158,8 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                 {usuario &&
                     <>
                     <label htmlFor="">{usuario}</label>
-                    <input type="text" 
+                    <input type="text"
+                    className="input-usuario" 
                     value={usuarioInput}
                     onChange={(e) => setUsuarioInput(e.target.value)}
                     />
@@ -94,17 +169,25 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                     <>
                     <label htmlFor="">{email}</label>
                     <input type="text" 
+                    className="input-email"
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     />
                     </>
                 }
                 <label htmlFor="">{senha}</label>
+                <div className="input-senha">
                 <input type={mostrarSenha ? "text" : "password"}
                 value={senhaInput}
                 onChange={(e) => setSenhaInput(e.target.value)}
                 />
-                <button onClick={() => setMostrarSenha(!mostrarSenha)}>olho</button>
+                { !mostrarSenha &&
+                    <FaEye onClick={() => setMostrarSenha(!mostrarSenha)} color="var(--destaque)" fontSize={"24px"} style={{cursor: "pointer"}}/>
+                }
+                { mostrarSenha &&
+                    <FaEyeSlash onClick={() => setMostrarSenha(!mostrarSenha)} color="var(--fundo)" fontSize={"24px"} style={{cursor: "pointer"}}/>
+                }
+                </div>
             </div>
             <div className="cadastro-form-button">
                 {<>
@@ -117,8 +200,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                 </>
                 } 
             </div>
-
-        </div>
+        </form>
     )
 }
 

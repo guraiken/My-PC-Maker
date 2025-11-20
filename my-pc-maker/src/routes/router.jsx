@@ -5,8 +5,8 @@ import Montagem from "../pages/Montagem";
 
 
 const router = createBrowserRouter([
-    {path:"/cadastro", element:<Cadastro/>},
-    {path: "/", element: <Login/>},
+    {path:"/", element:<Cadastro/>},
+    {path: "/login", element: <Login/>},
     {path: "/montagem", element: <Montagem/>}
 
 ])

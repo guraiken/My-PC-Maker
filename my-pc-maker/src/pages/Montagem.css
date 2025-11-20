@@ -22,41 +22,6 @@ body {
     min-height: 100vh;
 }
 
-
-.navbar {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    background-color: var(--primary-purple);
-    padding: 15px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    margin: 20px 30px 0 30px; 
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.nav-links {
-    display: flex;
-    flex-grow: 1; 
-    justify-content: space-around;
-    margin-left: 50px;
-}
-
-.nav-links a {
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.2s;
-}
-
-.nav-links a:hover {
-    color: var(--text-muted);
-}
-
 /* ----------------------------------- */
 /* LAYOUT PRINCIPAL (CONTAINER) */
 /* ----------------------------------- */
@@ -75,8 +40,8 @@ body {
 
 .sidebar {
     flex: none;         
-    width: 340px;       /* Largura fixa */
-    min-width: 200px;
+    width: 25%;       /* Largura fixa */
+    max-width: 400px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

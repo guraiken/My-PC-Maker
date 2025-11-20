@@ -6,6 +6,7 @@ import { GlobalContext } from "../contexts/globalContext"
 
 function Login() {
     const {usuarioLogado} = useContext(GlobalContext)
+    console.log (usuarioLogado)
 
   return (
     <section className="login-container">
@@ -26,7 +27,7 @@ function Login() {
                 </div>
 
                 <div className="login-middle-bottom">
-                    <span>Ainda não possui <Link to={"/cadastro"}>cadastro</Link>?</span>
+                    <span>Ainda não possui <Link to={"/"}>cadastro</Link>?</span>
                 </div>
             </div>
         </div>

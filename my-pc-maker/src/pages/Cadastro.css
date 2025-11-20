@@ -29,6 +29,7 @@
             height: 60%;
             flex-direction: column;
 
+            gap: 10px;
             justify-content: start;
             align-items: center;
         }
@@ -40,6 +41,7 @@
                 align-items: center;
 
                 font-family: "k2d";
+                gap: 10px;
                 font-size: 1.1rem;
                 color: var(--texto-principal);
             }

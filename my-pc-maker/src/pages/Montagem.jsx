@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Montagem.css'; 
+import Navbar from '../components/Navbar';
 
 
 const ProductCard = ({ name }) => (
@@ -13,8 +14,8 @@ const ProductCard = ({ name }) => (
 
 
 
-function App() {
-    const partTypes = ['Processador', 'Placa de Vídeo', 'Placa Mãe', 'Memória RAM', 'HD?', 'Fonte'];
+function Montagem() {
+    const partTypes = ['Processador', 'Placa Mãe', 'Placa de Vídeo', 'Memória RAM', 'Armazenam.', 'Fonte'];
     const [activePart, setActivePart] = useState('Processador');
     const productData = [
       'Algum ai', 'Algum ai', 'Algum ai', 'Algum ai',
@@ -24,27 +25,15 @@ function App() {
 
     return (
         <>
-            
-            {/* Navbar */}
-            <header className="navbar">
-                <div className="logo">
-                    <span>My PC Maker</span>
-                </div>
-                <nav className="nav-links">
-                    <a href="#">Testar Build</a>
-                    <a href="#">Feed</a>
-                    <a href="#">Perfil</a>
-                </nav>
-            </header>
-
+            <Navbar></Navbar>
             {/* Layout */}
             <main className="container">
                 <div className="main-content">
-                    <h2 className="section-title">TIPO DA PEÇA ATUAL</h2>
+                    <h2 className="section-title">{activePart}</h2>
 
                     <div className="part-type-selector">
                         {partTypes.map(type => (
-                            <button 
+                            <button
                                 key={type}
                                 className={`icon-button ${activePart === type ? 'active' : ''}`}
                                 onClick={() => setActivePart(type)}
@@ -85,4 +74,4 @@ function App() {
     );
 }
 
-export default App;
+export default Montagem;
