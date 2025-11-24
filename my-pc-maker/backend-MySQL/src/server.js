@@ -20,7 +20,7 @@ app.use(express.json());
 app.get('/usuario', async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM usuario');
-        res.json(rows);
+        res.status(200).json(rows);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Erro ao buscar usuarios' });
@@ -32,7 +32,7 @@ app.get('/usuario/:email', async (req, res) => {
     console.log(req.params)
     try {
         const [rows] = await pool.query('SELECT * FROM usuario WHERE email = ?', [email]);
-        res.json(rows[0]);
+        res.status(200).json(rows[0]);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Erro ao buscar usuarios' });
@@ -48,7 +48,7 @@ app.get('/usuario/:id', async (req, res) => {
         if (rows.length === 0) {
             return res.status(404).json({ error: 'Usuario não encontrado' });
         }
-        res.json(rows[0]);
+        res.status(200).json(rows[0]);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Erro ao buscar cliente' });

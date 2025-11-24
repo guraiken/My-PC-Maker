@@ -45,13 +45,30 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     }, [usuarios]);
 
     const cadastrarUsuario = async () => {
-        try{
-            const usuario = {
-                nome: usuarioInput,
-                senha: senhaInput,
-                email: emailInput
-            };
-            const response = await axios.post("http://localhost:3000/usuario", usuario);
+        const usuario = {
+            nome: usuarioInput,
+            senha: senhaInput,
+            email: emailInput
+        };
+        if(usuarioInput == null || senhaInput == null || emailInput == null){
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Usuário ou senha são inválidos",
+                text: "Por favor tente novamente.",
+                showConfirmButton: false,
+                background: "var(--fundo)",
+                color: "var(--texto-principal)", 
+                iconColor: "var(--destaque)",
+                timer: 1500, 
+                width: "30%",
+                heightAuto: "20%",
+            })
+
+        }else{
+
+            try{
+                const response = await axios.post("http://localhost:3000/usuario", usuario);
             if(response.status === 201){
                 fetchUsuarios()
                 limparForm()
@@ -87,6 +104,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                 width: "30%",
                 heightAuto: "20%",
             })
+        }
         }
     };
 
