@@ -37,7 +37,7 @@ function Montagem() {
                                 key={type}
                                 className={`icon-button ${activePart === type ? 'active' : ''}`}
                                 onClick={() => setActivePart(type)}
-                            >
+                                >
                                 {type}
                             </button>
                         ))}

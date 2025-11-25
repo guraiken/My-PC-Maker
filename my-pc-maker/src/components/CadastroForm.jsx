@@ -179,10 +179,18 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     } catch (error) {
         console.error("Erro ao logar:", error);
         Swal.fire({
+            position: "center",
             icon: "error",
-            title: "Servidor OFFLINE",
-            timer: 1400
-        });
+            title: "Erro: 500",
+            text: "Servidor OFFLINE",
+            showConfirmButton: false,
+            background: "var(--fundo)",
+            color: "var(--texto-principal)", 
+            iconColor: "var(--destaque)",
+            timer: 1400, 
+            width: "30%",
+            heightAuto: "20%",
+        })
     }
 };
     
