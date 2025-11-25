@@ -52,17 +52,18 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
         };
         if(usuarioInput == null || senhaInput == null || emailInput == null){
             Swal.fire({
-                position: "center",
+                position: "top",
                 icon: "error",
-                title: "Usuário ou senha são inválidos",
-                text: "Por favor tente novamente.",
+                title: "Preencha todos os campos!",
+                text: "Verifique os campos preenchidos.",
                 showConfirmButton: false,
                 background: "var(--fundo)",
                 color: "var(--texto-principal)", 
                 iconColor: "var(--destaque)",
-                timer: 1500, 
+                timer: 1500,
+                timerProgressBar: 1500, 
                 width: "30%",
-                heightAuto: "20%",
+                toast: true
             })
 
         }else{
