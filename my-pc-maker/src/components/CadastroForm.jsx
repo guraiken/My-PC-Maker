@@ -8,7 +8,6 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 
 
-
 function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     const [mostrarSenha, setMostrarSenha] = useState()
     const [usuarioInput, setUsuarioInput] = useState() 
@@ -110,62 +109,82 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     };
 
     const logarUsuario = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3000/usuario/${emailInput}`)
-            console.log(response.data)
-            if(response.status === 200){
-                if(response.data.senha === senhaInput){
-                    limparForm()
-                    const usuario = response.data
-                    localStorage.setItem("usuarioLogado", JSON.stringify(usuario))
-                    setUsuarioLogado(JSON.parse(localStorage.getItem("usuarioLogado")));
-                    Swal.fire({  
-                        position: "center",
-                        icon: "success",
-                        title: "Usuário logado com sucesso",
-                        showConfirmButton: false,
-                        background: "var(--fundo)",
-                        color: "var(--texto-principal)", 
-                        iconColor: "var(--destaque)",
-                        timer: 1200, 
-                        width: "30%",
-                        heightAuto: "20%",
-                    })
-                    setTimeout(() => {
-                        navegar('/montagem')
-                    }, '1200')
-                } else {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "Erro: Verifique os dados inseridos",
-                        showConfirmButton: false,
-                        background: "var(--fundo)",
-                        color: "var(--texto-principal)", 
-                        iconColor: "var(--destaque)",
-                        timer: 1400, 
-                        width: "30%",
-                    })
-                }
-            }
-        }
-        catch (error){
-            console.error('Não foi possível logar no usuário:', error)
-            Swal.fire({
-                position: "center",
+    try {
+        const response = await axios.get(`http://localhost:3000/usuario/${emailInput}`);
+        const usuario = response.data;
+
+        // 1. VALIDAR CAMPOS OBRIGATÓRIOS
+        if (!emailInput || !senhaInput) {
+            return Swal.fire({
+                position: "top",
                 icon: "error",
-                title: "Erro: 500",
-                text: "Servidor OFFLINE",
+                title: "Preencha todos os campos!",
+                text: "Verifique os campos preenchidos.",
                 showConfirmButton: false,
                 background: "var(--fundo)",
                 color: "var(--texto-principal)", 
                 iconColor: "var(--destaque)",
-                timer: 1400, 
-                width: "30%",
-                heightAuto: "20%",
-            })
+                timer: 1500,
+                toast: true
+            });
         }
+
+        // 2. VERIFICAR SE USUÁRIO EXISTE
+        if (!usuario) {
+            return Swal.fire({
+                icon: "error",
+                title: "Usuário não encontrado!",
+                background: "var(--fundo)",
+                color: "var(--texto-principal)", 
+                iconColor: "var(--destaque)",
+                confirmButtonColor: "var(--destaque)",
+                timer: 1500
+            });
+        }
+
+        // 3. SENHA INCORRETA
+        if (usuario.senha !== senhaInput) {
+            return Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Senha incorreta",
+                text: "Por favor tente novamente.",
+                showConfirmButton: false,
+                background: "var(--fundo)",
+                color: "var(--texto-principal)", 
+                iconColor: "var(--destaque)",
+                timer: 1500,
+                toast: true
+            });
+        }
+
+        // 4. LOGIN OK
+        limparForm();
+        localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+        setUsuarioLogado(usuario);
+
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Usuário logado com sucesso",
+            showConfirmButton: false,
+            background: "var(--fundo)",
+            color: "var(--texto-principal)", 
+            iconColor: "var(--destaque)",
+            timer: 1200
+        });
+
+        setTimeout(() => navegar('/montagem'), 1200);
+
+    } catch (error) {
+        console.error("Erro ao logar:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Servidor OFFLINE",
+            timer: 1400
+        });
     }
+};
     
     return (
         <form className='cadastro-form'>
@@ -222,5 +241,6 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
         </form>
     )
 }
+
 
 export default CadastroForm

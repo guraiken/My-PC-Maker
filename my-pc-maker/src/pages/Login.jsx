@@ -3,6 +3,8 @@ import CadastroForm from "../components/CadastroForm"
 import "./Login.css"
 import { useContext } from "react"
 import { GlobalContext } from "../contexts/globalContext"
+import SidePanel from "../components/SidePanel"
+
 
 function Login() {
     const {usuarioLogado} = useContext(GlobalContext)
@@ -20,7 +22,7 @@ function Login() {
                 <div className="login-middle-center">
                     <CadastroForm
                         titulo={"LOGIN"}
-                        email={"Usuário/E-mail"}
+                        email={"E-mail"}
                         senha={"Senha"}
                         nomeButton={"LOGAR"}
                     />
@@ -32,22 +34,10 @@ function Login() {
             </div>
         </div>
 
-        <div className="login-left">
-            <div className="login-left-center">
-                <img src="./images/logo-grande.png" alt="" width={"35%"}/>
-                <div className="login-left-texto">
-                    <h1>BEM VINDO DE VOLTA!</h1>
-                    <div className="login-left-span">
-                    <span>Sentimos sua falta!</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="login-left-bottom">
-                <img src="https://pcnetinformatica.com.br/wp-content/uploads/2023/04/produtos-pcgamers-1024x1024.png" alt="" width={"45%"}/>
-            </div>
-
-        </div>
+        <SidePanel
+        titulo={"BEM VINDO DE VOLTA!"}
+        texto={"Estamos ansiosos para ver o que você vai montar."}
+        />
 
     </section>
   )

@@ -86,8 +86,9 @@
     transition: ease transform 0.1s;
     color: var(--texto-principal);
     background-color: var(--destaque);
-    width: 55%;
-    height: 60%;
+    width: 50%;
+    height: 55%;
+    max-width: 400px;
     border-radius: 30px;
     border-style: none;
     padding: 15px;
@@ -99,6 +100,6 @@
 
 .cadastro-form-button button:hover {
     transition: ease transform 0.1s;
-    transform: scale(1.05);
+    transform: scale(1.03);
     cursor: pointer;
 }
