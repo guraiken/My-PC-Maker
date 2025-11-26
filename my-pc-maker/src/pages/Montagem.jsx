@@ -70,7 +70,7 @@ function Montagem() {
             <Navbar />
             <main className="container">
                 <div className="main-content">
-                    <h2 className="section-title">{activePart}</h2>
+                    <h2 className="section-title">Montagem de PC</h2>
 
                     <div className="part-type-selector">
                         {partTypes.map(type => (
