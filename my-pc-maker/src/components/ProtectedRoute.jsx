@@ -13,7 +13,7 @@ function ProtectedRoute({children}) {
         let timerInterval;
         Swal.fire({
             title: "Usuário não logado",
-            html: "Redirecionando para o login em <b></b>ms.",
+            html: "Redirecionando para o login em <b></b> segundos.",
             loaderHtml: '<div class="my-custom-spinner"></div>',
             width: "35%",
             heightAuto: true,
@@ -26,7 +26,7 @@ function ProtectedRoute({children}) {
                 Swal.showLoading();
                 const timer = Swal.getPopup().querySelector("b");
                 timerInterval = setInterval(() => {
-                    timer.textContent = `${Swal.getTimerLeft()}`;
+                    timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(2)}`;
                 }, 100);
             },
             willClose: () => {
