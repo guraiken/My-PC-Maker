@@ -25,7 +25,9 @@ function Montagem() {
 
     return (
         <>
+        <div className='centralize'>
             <Navbar></Navbar>
+        </div>
             {/* Layout */}
             <main className="container">
                 <div className="main-content">

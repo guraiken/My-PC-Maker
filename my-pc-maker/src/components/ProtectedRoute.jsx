@@ -13,8 +13,10 @@ function ProtectedRoute({children}) {
         let timerInterval;
         Swal.fire({
             title: "Usuário não logado",
-            html: "Redirecionando para o login em <b></b>.",
+            html: "Redirecionando para o login em <b></b>ms.",
             loaderHtml: '<div class="my-custom-spinner"></div>',
+            width: "35%",
+            heightAuto: true,
             background: "var(--profundidade)",
             color: "white",
             iconColor: "var(--destaque)",

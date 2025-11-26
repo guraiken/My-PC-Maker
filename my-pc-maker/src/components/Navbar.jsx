@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom"
 import "./Navbar.css"
+import { div, section } from "framer-motion/client"
 
 
 function Navbar() {
@@ -10,7 +12,7 @@ function Navbar() {
     <nav className="nav-links">
         <a href="#">Testar Build</a>
         <a href="#">Feed</a>
-        <a href="#">Perfil</a>
+        <Link to={"/perfil"}>Perfil</Link>
     </nav>
     </header>
   )

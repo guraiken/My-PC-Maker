@@ -43,30 +43,34 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
         console.log(usuarios)
     }, [usuarios]);
 
-    const cadastrarUsuario = async () => {
-        const usuario = {
-            nome: usuarioInput,
-            senha: senhaInput,
-            email: emailInput
-        };
-        if(usuarioInput == null || senhaInput == null || emailInput == null){
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Preencha todos os campos!",
-                text: "Verifique os campos preenchidos.",
-                showConfirmButton: false,
-                background: "var(--fundo)",
-                color: "var(--texto-principal)", 
-                iconColor: "var(--destaque)",
-                timer: 1500,
-                timerProgressBar: 1500, 
-                width: "30%",
-                toast: true
-            })
-
-        }else{
-
+    const cadastrarUsuario = async (e) => {
+        e.preventDefault()
+        const buttonCadastro = e.nativeEvent.submitter.className
+        if(buttonCadastro === "button-cadastro"){
+            console.log(buttonCadastro)
+            const usuario = {
+                nome: usuarioInput,
+                senha: senhaInput,
+                email: emailInput
+            };
+            if(usuarioInput == null || senhaInput == null || emailInput == null){
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Preencha todos os campos!",
+                    text: "Verifique os campos preenchidos.",
+                    showConfirmButton: false,
+                    background: "var(--fundo)",
+                    color: "var(--texto-principal)", 
+                    iconColor: "var(--destaque)",
+                    timer: 1500,
+                    timerProgressBar: 1500, 
+                    width: "30%",
+                    toast: true
+                })
+                
+            }else{
+                
             try{
                 const response = await axios.post("http://localhost:3000/usuario", usuario);
             if(response.status === 201){
@@ -105,10 +109,13 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                 heightAuto: "20%",
             })
         }
-        }
-    };
+    }
+}else {
+    logarUsuario()
+}
+};
 
-    const logarUsuario = async () => {
+const logarUsuario = async () => {
     try {
         const response = await axios.get(`http://localhost:3000/usuario/${emailInput}`);
         const usuario = response.data;
@@ -195,7 +202,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
 };
     
     return (
-        <form className='cadastro-form'>
+        <form className='cadastro-form' onSubmit={(e) => cadastrarUsuario(e)}>
             <div className="cadastro-title">
                 <h2>{titulo}</h2>
             </div>
@@ -238,10 +245,10 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
             <div className="cadastro-form-button">
                 {<>
                     {titulo == "CADASTRO" &&<>
-                    <button type="button" onClick={cadastrarUsuario}>{nomeButton}</button>
+                    <button type="submit" className="button-cadastro">{nomeButton}</button>
                     </>}
                     {titulo == "LOGIN" &&<>
-                    <button type="button" onClick={logarUsuario}>{nomeButton}</button>
+                    <button type="submit" className="button-login">{nomeButton}</button>
                     </>}
                 </>
                 } 
