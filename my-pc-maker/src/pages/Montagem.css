@@ -9,14 +9,8 @@
 
  }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'k2d';
     background-color: var(--bg-dark);
     color: var(--text-light);
     min-height: 100vh;
