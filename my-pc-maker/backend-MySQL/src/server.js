@@ -109,3 +109,26 @@ app.delete('/usuario/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
+
+
+app.get('/api/pecas', async (req, res) => {
+    const { tipo } = req.query;
+
+    if (!tipo) {
+        return res.status(400).json({ error: 'O parâmetro "tipo" é obrigatório.' });
+    }
+
+    try {
+        // Consulta o banco de dados filtrando pelo TIPO
+        const [rows] = await pool.query(
+            'SELECT id_peca, tipo, modelo, preco, watts_consumidos, link_imagem FROM peca WHERE tipo = ?',
+            [tipo]
+        );
+        
+        // Retorna a lista de peças
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error("Erro ao buscar peças:", err.message);
+        res.status(500).json({ error: 'Erro interno ao buscar peças' });
+    }
+});

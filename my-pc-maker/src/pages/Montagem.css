@@ -204,6 +204,18 @@ body {
 }
 
 /* Card de Consumo Atual */
+.current-piece-chosen {
+    background-color: var(--primary-purple);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.current-piece-chosen .text-listen {
+   text-align: left;
+   
+}
+
 .current-consumption-card {
     background-color: var(--primary-purple);
     border-radius: 10px;

@@ -65,4 +65,38 @@ FOREIGN KEY(usuario_id)
 REFERENCES usuario(id_usuario)
 );
 
+INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
+('processador', 'teste1', 100, 20),
+('processador', 'teste12', 100, 20),
+('processador', 'teste13', 100, 20),
+('processador', 'teste14', 100, 20),
+
+('Placa de Vídeo', 'teste21', 100, 20),
+('Placa de Vídeo', 'teste22', 100, 20),
+('Placa de Vídeo', 'teste23', 100, 20),
+('Placa de Vídeo', 'teste24', 100, 20),
+
+('Placa Mãe', 'teste31', 100, 20),
+('Placa Mãe', 'teste32', 100, 20),
+('Placa Mãe', 'teste33', 100, 20),
+('Placa Mãe', 'teste34', 100, 20),
+
+('Memória RAM', 'teste41', 100, 20),
+('Memória RAM', 'teste42', 100, 20),
+('Memória RAM', 'teste43', 100, 20),
+('Memória RAM', 'teste44', 100, 20),
+
+('Armazenamento', 'teste51', 100, 20),
+('Armazenamento', 'teste52', 100, 20),
+('Armazenamento', 'teste53', 100, 20),
+('Armazenamento', 'teste54', 100, 20),
+
+('Fonte', 'teste61', 100, 20),
+('Fonte', 'teste62', 100, 20),
+('Fonte', 'teste63', 100, 20),
+('Fonte', 'teste64', 100, 20)
+;
+
 SELECT * FROM usuario;
+
+DROP DATABASE mpcm
