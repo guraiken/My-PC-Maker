@@ -15,6 +15,9 @@ function ProtectedRoute({children}) {
             title: "Usuário não logado",
             html: "Redirecionando para o login em <b></b> segundos.",
             loaderHtml: '<div class="my-custom-spinner"></div>',
+            customClass: {
+                timerProgressBar: 'progressBar'
+            },
             width: "35%",
             heightAuto: true,
             background: "var(--profundidade)",

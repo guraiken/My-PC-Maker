@@ -99,10 +99,10 @@ function Montagem() {
                             />
                         ))}
                         
-                        {availableParts.length === 0 && (
-                             <p>Carregando peças ou nenhuma peça encontrada para {activePart}.</p>
-                        )}
                     </div>
+                    {availableParts.length === 0 && (
+                        <p>Carregando peças ou nenhuma peça encontrada para {activePart}.</p>
+                    )}
                 </div>
 
                 <aside className="sidebar">

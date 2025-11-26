@@ -39,6 +39,11 @@ body {
     flex: 2; /* Ocupa a maior parte do espaço */
 }
 
+.main-content p {
+    text-align: center;
+    background-color: var(--primary-purple);
+}
+
 .sidebar {
     flex: none;         
     width: 25%;       /* Largura fixa */
