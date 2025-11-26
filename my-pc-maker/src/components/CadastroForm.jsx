@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import axios from "axios"
 import "./CadastroForm.css"
 import { GlobalContext } from "../contexts/globalContext"
@@ -13,7 +13,9 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
     const [usuarioInput, setUsuarioInput] = useState() 
     const [emailInput, setEmailInput] = useState() 
     const [senhaInput, setSenhaInput] = useState()
-    
+
+    const inputRefEmail = useRef(null)
+    const inputRefUsuario = useRef(null)
     const [usuarios, setUsuarios] = useState([])
     const {usuarioLogado, setUsuarioLogado} = useContext(GlobalContext)
 
@@ -37,6 +39,11 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
 
     useEffect(()=> {
         fetchUsuarios();
+        if(titulo === "CADASTRO"){
+            inputRefUsuario.current.focus()
+        }else if (titulo === "LOGIN"){
+            inputRefEmail.current.focus()
+        }
     }, []);
 
     useEffect(()=> {
@@ -213,6 +220,7 @@ const logarUsuario = async () => {
                     <label htmlFor="">{usuario}</label>
                     <input type="text"
                     className="input-usuario" 
+                    ref={inputRefUsuario}
                     value={usuarioInput}
                     onChange={(e) => setUsuarioInput(e.target.value)}
                     />
@@ -223,6 +231,7 @@ const logarUsuario = async () => {
                     <label htmlFor="">{email}</label>
                     <input type="text" 
                     className="input-email"
+                    ref={inputRefEmail}
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     />
