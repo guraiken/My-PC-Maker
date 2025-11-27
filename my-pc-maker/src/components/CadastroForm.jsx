@@ -65,6 +65,9 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                     position: "top",
                     icon: "error",
                     title: "Preencha todos os campos!",
+                    customClass: {
+                        timerProgressBar: 'progressBar'
+                    },
                     text: "Verifique os campos preenchidos.",
                     showConfirmButton: false,
                     background: "var(--fundo)",
@@ -151,7 +154,12 @@ const logarUsuario = async () => {
                 background: "var(--fundo)",
                 color: "var(--texto-principal)", 
                 iconColor: "var(--destaque)",
-                confirmButtonColor: "var(--destaque)",
+                heightAuto: true,
+                timerProgressBar: true,
+                customClass: {
+                    timerProgressBar: 'progressBar'
+                },
+                showConfirmButton: false,
                 timer: 1500
             });
         }
