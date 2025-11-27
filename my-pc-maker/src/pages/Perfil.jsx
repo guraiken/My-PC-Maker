@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar"
+import SeletorCondicional from "../components/SeletorCondicional"
 import "./Perfil.css"
 
 function Perfil() {
@@ -16,7 +17,7 @@ function Perfil() {
         
         </div>
         <div className="perfil-content">
-
+          <SeletorCondicional/>
         </div>
 
       </div>

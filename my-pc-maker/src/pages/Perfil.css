@@ -34,3 +34,9 @@
     border: none;
     border-radius: 20px;
 }
+
+.perfil-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
