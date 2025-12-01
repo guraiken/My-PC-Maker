@@ -8,10 +8,11 @@ import AlreadyLogged from "../components/AlreadyLogged";
 
 
 const router = createBrowserRouter([
-    {path:"/", element: <AlreadyLogged><Cadastro/></AlreadyLogged> },
+    {path:"/cadastro", element: <AlreadyLogged><Cadastro/></AlreadyLogged> },
     {path: "/login", element: <AlreadyLogged><Login/></AlreadyLogged> },
     {path: "/montagem", element: <ProtectedRoute><Montagem/></ProtectedRoute> },
-    {path: "/perfil", element: <ProtectedRoute><Perfil/></ProtectedRoute> }
+    {path: "/perfil", element: <ProtectedRoute><Perfil/></ProtectedRoute> },
+    {path: "/", element: <ProtectedRoute></ProtectedRoute> }
 
 ])
 

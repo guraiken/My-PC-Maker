@@ -1,20 +1,32 @@
 CREATE DATABASE mpcm;
 
+CREATE USER 'gustavo'@'localhost' IDENTIFIED BY 'senai';
+
+SELECT* FROM mysql.user;
+/*/GRANT SELECT ON *.* 'professor'@'localhost' = DAR PERMISSAO (DE CONSULTA)
+-- 1° * (nome banco)
+-- 2° * (nome tabela)
+-- SHOW GRANTS FOR 'professor'@'localhost'; (mostra permissoes)
+-- MAIS DE 1 FUNCAO = GRANT SELECT, INSERT, UPDATE ON *.* 'professor'@'localhost' 
+REVOKE SELECT ON *.* = RETIRAR PERMISSAO (DE CONSULTA)
+
+ /*/
+
 USE mpcm;
 
 CREATE TABLE usuario(
 id_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-nome VARCHAR(75),
-senha VARCHAR(75),
-email VARCHAR(100)
+nome VARCHAR(75) NOT NULL,
+senha VARCHAR(75) NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE peca(
 id_peca INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 tipo ENUM('Processador', 'Placa de Vídeo', 'Placa Mãe', 'Memória RAM', 'Armazenamento', 'Fonte') NOT NULL,
 modelo VARCHAR(155) NOT NULL,
-specs TEXT,
-preco DECIMAL(8,2),
+specs TEXT DEFAULT('Nenhuma spec foi encontrada no banco'),
+preco DECIMAL(8,2) DEFAULT('Não há preços encontrados para este produto'),
 watts_consumidos DECIMAL(8,1) NOT NULL,
 link VARCHAR(100),
 link_imagem VARCHAR(100)
@@ -24,8 +36,8 @@ CREATE TABLE computador(
 id_computador INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 potencia_necessaria DECIMAL(8,1),
 preco_estimado DECIMAL(8,2),
-usuario_id INT,
-peca_id INT,
+usuario_id INT NOT NULL,
+peca_id INT NOT NULL,
 FOREIGN KEY(usuario_id)
 REFERENCES usuario(id_usuario),
 FOREIGN KEY(peca_id)
@@ -42,7 +54,7 @@ FOREIGN KEY (computador_id) REFERENCES computador(id_computador)
 
 CREATE TABLE post(
 id_post INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-titulo VARCHAR(75),
+titulo VARCHAR(75) NOT NULL,
 descricao TEXT,
 avaliacao INT (2),
 CHECK (avaliacao <= 10 AND avaliacao >= 0),
@@ -98,5 +110,3 @@ INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
 ;
 
 SELECT * FROM usuario;
-
-DROP DATABASE mpcm
