@@ -11,7 +11,8 @@ const pool = mysql.createPool({
     database: process.env.DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    port: process.env.PORT
 });
 
 app.use(cors());
