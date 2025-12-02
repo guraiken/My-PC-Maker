@@ -1,8 +1,17 @@
 import Navbar from "../components/Navbar"
 import SeletorCondicional from "../components/SeletorCondicional"
 import "./Perfil.css"
+import { useContext, useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import Swal from 'sweetalert2'
 
 function Perfil() {
+  
+  function editarPerfil(){
+
+  }
+
+
   return (
     <section className="perfil-container">
       <Navbar/>
