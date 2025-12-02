@@ -29,7 +29,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
 
     const fetchUsuarios = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/usuario")
+            const response = await axios.get("https://my-pc-maker-cq8f.vercel.app/usuario")
             setUsuarios(response.data)
         }
         catch (error){
@@ -82,7 +82,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
             }else{
                 
             try{
-                const response = await axios.post("http://localhost:3000/usuario", usuario);
+                const response = await axios.post("https://my-pc-maker-cq8f.vercel.app/usuario", usuario);
             if(response.status === 201){
                 fetchUsuarios()
                 limparForm()
@@ -127,7 +127,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
 
 const logarUsuario = async () => {
     try {
-        const response = await axios.get(`http://localhost:3000/usuario/${emailInput}`);
+        const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/usuario/${emailInput}`);
         const usuario = response.data;
 
         // 1. VALIDAR CAMPOS OBRIGATÓRIOS
