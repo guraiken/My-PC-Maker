@@ -5,10 +5,10 @@ require("dotenv").config()
 
 const app = express();
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',      // Altere para o nome do seu user no MySQL
-    password: "senai",    // Altere para a senha correta
-    database: 'mpcm',
+    host: process.env.HOST,
+    user: process.env.USER,      // Altere para o nome do seu user no MySQL
+    password: process.env.PASSWORD,    // Altere para a senha correta
+    database: process.env.DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0

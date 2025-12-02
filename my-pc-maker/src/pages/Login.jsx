@@ -29,7 +29,7 @@ function Login() {
                 </div>
 
                 <div className="login-middle-bottom">
-                    <span>Ainda não possui <Link to={"/"}>cadastro</Link>?</span>
+                    <span>Ainda não possui <Link to={"/cadastro"}>cadastro</Link>?</span>
                 </div>
             </div>
         </div>
