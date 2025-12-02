@@ -13,13 +13,145 @@
 
 .perfil-area {
     display: flex;
-    background-color: blue;
+    background-color: var(--profundidade);
     width: 90%;
     height: 40%;
 
     border: none;
     border-radius: 20px;
 }
+
+    .user-bio {
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+        height: 100%;
+
+        justify-content: center;
+        align-items: center;
+    }
+    .user-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 40%;
+
+    }
+
+    .user-biodesc {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: start;
+
+        width: 60%;
+    }
+
+    .upper-div {
+        display: flex;
+        height: 50%;
+        width: 100%;
+
+        justify-content: center;
+        align-items: end;
+    }
+
+    .user-stats {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 50%;
+
+        justify-content: center;
+        align-items: center;
+    }
+    .user-builds-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 50%;
+        height: 100%;
+        
+    }
+
+        .user-builds {
+            display: flex;
+            width: 80%;
+            height: 70%;
+            
+            background-color: var(--separacao);
+
+            border-radius: 20px;
+        }
+            .build-icon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 50%;
+            }
+
+            .build-stats {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: start;
+            
+        
+
+                width: 50%;
+                height: 100%;
+            }
+
+    .lower-div {
+        display: flex;
+        height: 50%;
+        width: 100%;
+
+        justify-content: center;
+        align-items: start;
+    }
+        .user-buttons {
+            display: flex;
+            width: 50%;
+            height: 70%;
+            justify-content: center;
+            align-items: center;
+
+            gap: 25px;
+        }
+
+        .user-buttons button {
+            transition: ease transform 0.1s;
+            width: 50%;
+            height: 55%;
+            max-width: 400px;
+            border-radius: 30px;
+            border-style: none;
+            font-size: 1.5rem;
+            font-family: "k2d";
+            font-weight: bold;
+            color: var(--texto-principal);
+        }
+
+        .button-sair {
+            background-color: var(--separacao);
+        }
+        .button-editar {
+            background-color: var(--destaque);       
+        }
+
+        .user-buttons button:hover {
+            transition: ease filter 0.1s;
+            filter: brightness(1.2);
+            cursor: pointer;
+        }
+
+
+
+        
+
 
 .perfil-second-area {
     display: flex;
