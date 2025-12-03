@@ -30,7 +30,7 @@ function Cadastro() {
                 </div>
 
                 <div className="cadastro-middle-bottom">
-                    <span>Já possui <Link to={"/login"}>login</Link>?</span>
+                    <span>Já possui <Link to={"/"}>login</Link>?</span>
                 </div>
             </div>
         </div>

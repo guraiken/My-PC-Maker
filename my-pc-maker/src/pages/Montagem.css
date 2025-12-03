@@ -295,3 +295,32 @@ body {
     background-color: var(--accent-orange);
     border-radius: 50%;
 }
+
+.save-button {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+
+            gap: 25px;
+        }
+
+        .save-button button {
+            transition: ease transform 0.1s;
+            width: 100%;
+            height: 70px;
+            max-width: 400px;
+            border-radius: 10px;
+            border-style: none;
+            font-size: 2rem;
+            font-family: "k2d";
+            font-weight: bold;
+            color: var(--texto-principal);
+
+            font-size: clamp(0.5rem, 1.5vw, 1.5rem)
+        }
+
+        .button-save {
+            background-color: var(--destaque);       
+        }

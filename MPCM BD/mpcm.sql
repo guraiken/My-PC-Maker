@@ -1,6 +1,5 @@
 CREATE DATABASE mpcm;
 
-CREATE USER 'gustavo'@'localhost' IDENTIFIED BY 'senai';
 
 SELECT* FROM mysql.user;
 /*/GRANT SELECT ON *.* 'professor'@'localhost' = DAR PERMISSAO (DE CONSULTA)
@@ -78,10 +77,10 @@ REFERENCES usuario(id_usuario)
 );
 
 INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
-('processador', 'teste1', 100, 20),
-('processador', 'teste12', 100, 20),
-('processador', 'teste13', 100, 20),
-('processador', 'teste14', 100, 20),
+('Processador', 'teste1', 100, 20),
+('Processador', 'teste12', 100, 20),
+('Processador', 'teste13', 100, 20),
+('Processador', 'teste14', 100, 20),
 
 ('Placa de Vídeo', 'teste21', 100, 20),
 ('Placa de Vídeo', 'teste22', 100, 20),
@@ -110,3 +109,4 @@ INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
 ;
 
 SELECT * FROM usuario;
+

@@ -10,7 +10,7 @@ function Navbar() {
         <span>My PC Maker</span>
     </div>
     <nav className="nav-links">
-        <a href="#">Testar Build</a>
+        
         <a href="#">Feed</a>
         <Link to={"/perfil"}>Perfil</Link>
     </nav>

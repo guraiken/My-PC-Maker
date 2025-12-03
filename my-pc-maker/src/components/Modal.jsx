@@ -1,6 +1,8 @@
 import { useContext, useState } from "react"
 import "./Modal.css"
 import { GlobalContext } from "../contexts/globalContext"
+import { FaWindowClose } from "react-icons/fa";
+
 
 function Modal({children}) {
   
@@ -13,7 +15,7 @@ function Modal({children}) {
       <section className="modal-container">
       <div className="modal">
         <div className="modal-top">
-          <span onClick={() => setIsOpen(false)}>&times</span>
+          <span onClick={() => setIsOpen(false)}><FaWindowClose/></span>
         </div>
         <div className="modal-content">
             {children}
