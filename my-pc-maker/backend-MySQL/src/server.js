@@ -75,23 +75,45 @@ app.post('/usuario', async (req, res) => {
 });
 
 app.put('/usuario/:id', async (req, res) => {
-    const { id } = req.params;
-    const { nome, senha, email,  } = req.body;
-    try {
-        const [result] = await pool.query(
-            'UPDATE usuario SET nome = ?, senha = ?, email = ? WHERE id_usuario = ?',
-            [nome, senha, email, id]
-        );
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
-        const [usuarioAtualizado] = await pool.query('SELECT * FROM usuario WHERE id_usuario = ?', [id]);
-        res.json(usuarioAtualizado[0]);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: 'Erro ao atualizar cliente' });
+  const { id } = req.params;
+  const { nome, email, senha } = req.body;
+
+  try {
+    // Se o usuário mandou senha nova E não está vazia
+    if (senha && senha.trim() !== "") {
+      const [result] = await pool.query(
+        "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id_usuario = ?",
+        [nome, email, senha, id]
+      );
+      
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Usuário não encontrado" });
+      }
+    } else {
+      // Atualizar sem mexer na senha
+      const [result] = await pool.query(
+        "UPDATE usuario SET nome = ?, email = ? WHERE id_usuario = ?",
+        [nome, email, id]
+      );
+      
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Usuário não encontrado" });
+      }
     }
+
+    const [usuarioAtualizado] = await pool.query(
+      "SELECT * FROM usuario WHERE id_usuario = ?",
+      [id]
+    );
+
+    res.json(usuarioAtualizado[0]);
+
+  } catch (err) {
+    console.error("ERRO MYSQL:", err);
+    res.status(500).json({ error: "Erro ao atualizar cliente" });
+  }
 });
+
 
 app.delete('/usuario/:id', async (req, res) => {
     const { id } = req.params;

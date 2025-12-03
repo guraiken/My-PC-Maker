@@ -10,9 +10,9 @@ import axios from "axios"
 
 function Perfil() {
   const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen} = useContext(GlobalContext)
-    const [nomeInput, setNomeInput] = useState(usuarioLogado ? usuarioLogado.nome : '')
-    const [emailInput, setEmailInput] = useState(usuarioLogado ? usuarioLogado.email : '')
-    const [senhaInput, setSenhaInput] = useState('')
+    const [nomeInput, setNomeInput] = useState(usuarioLogado.nome)
+    const [emailInput, setEmailInput] = useState(usuarioLogado.email)
+    const [senhaInput, setSenhaInput] = useState()
 
   const navegar = useNavigate()
 
@@ -42,16 +42,16 @@ function Perfil() {
           usuario.senha = senhaInput;
         }
 
+        console.log("ENVIANDO:", usuario);
         const response = await axios.put(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`, usuario);
 
         if (response.status === 200) {
           fetchUsuarios();
-          limparForm();
           setIsOpen(false)
         }
       }
       catch (error) {
-        console.error("Erro ao editar usuário:", error)
+        console.log(error.response?.data || error);
       }
     }
 
@@ -63,16 +63,16 @@ function Perfil() {
         <div className="perfil-edit">
           <h1>Editar Perfil</h1>
           <form onSubmit={(e) => editarUsuario(e)}>
-            <label htmlFor="nome">Nome:</label>
-            <input type="text" name="nome" placeholder={usuarioLogado.nome}
+            <label>Nome:</label>
+            <input type="text" placeholder={nomeInput}
             value={nomeInput} onChange={(e) => setNomeInput(e.target.value)}
             />
-            <label htmlFor="email">Email:</label>
-            <input type="email" name="email" placeholder={usuarioLogado.email}
+            <label>Email:</label>
+            <input type="text" placeholder={emailInput}
             value={emailInput} onChange={(e) => setEmailInput(e.target.value)}
             />
-            <label htmlFor="senha">Senha:</label>
-            <input type="password" name="senha" placeholder="********"
+            <label>Senha:</label>
+            <input type="password" placeholder="********"
             value={senhaInput} onChange={(e) => setSenhaInput(e.target.value)}
             />
             <div className="perfil-edit-buttons">
