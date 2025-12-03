@@ -7,12 +7,15 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 import axios from "axios"
+import ConfirmationAlert from "../components/Alerts/ConfirmationAlert"
 
 function Perfil() {
   const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen} = useContext(GlobalContext)
     const [nomeInput, setNomeInput] = useState(usuarioLogado.nome)
     const [emailInput, setEmailInput] = useState(usuarioLogado.email)
     const [senhaInput, setSenhaInput] = useState()
+    const [bioInput, setBioInput] = useState(usuarioLogado.bio ? usuarioLogado.bio : 'Escreva algo sobre você...')
+    const [imagemLinkInput, setImagemLinkInput] = useState(usuarioLogado.imagem_link ? usuarioLogado.imagem_link : '')
 
   const navegar = useNavigate()
   
@@ -22,9 +25,13 @@ function Perfil() {
         const usuario = {
           nome: nomeInput,
           email: emailInput,
+          bio: bioInput
         };
         if (senhaInput) {
           usuario.senha = senhaInput;
+        }
+        if (imagemLinkInput) {
+          usuario.imagem_link = imagemLinkInput;
         }
 
         console.log("ENVIANDO:", usuario);
@@ -33,17 +40,11 @@ function Perfil() {
         if (response.status === 200) {
           setUsuarioLogado(response.data)
           setIsOpen(false)
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Usuário atualizado com sucesso!",
-            showConfirmButton: false,
-            background: "var(--fundo)",
-            color: "var(--texto-principal)", 
-            iconColor: "var(--destaque)",
-            timer: 1200
-          });
-        }
+          ConfirmationAlert({
+            titulo: "PERFIL ATUALIZADO COM SUCESO!",
+          })
+          console.log(response.data)
+        } 
       }
       catch (error) {
         console.log(error.response?.data || error);
@@ -58,17 +59,30 @@ function Perfil() {
         <div className="perfil-edit">
           <h1>Editar Perfil</h1>
           <form onSubmit={(e) => editarUsuario(e)}>
+
             <label>Nome:</label>
             <input type="text" placeholder={nomeInput}
             value={nomeInput} onChange={(e) => setNomeInput(e.target.value)}
             />
+
             <label>Email:</label>
             <input type="text" placeholder={emailInput}
             value={emailInput} onChange={(e) => setEmailInput(e.target.value)}
             />
+
             <label>Senha:</label>
             <input type="password" placeholder="********"
             value={senhaInput} onChange={(e) => setSenhaInput(e.target.value)}
+            />
+
+            <label>Imagem de Perfil:</label>
+            <input type="text" placeholder="Exemplo: https://link-da-imagem.com/imagem.jpg"
+            value={imagemLinkInput} onChange={(e) => setImagemLinkInput(e.target.value)}/>
+
+            <h1>Informações do Perfil</h1>
+            <label>Bio:</label>
+            <textarea type="text" 
+            value={bioInput} onChange={(e) => setBioInput(e.target.value)}
             />
             <div className="perfil-edit-buttons">
               <button type="submit" className="button-salvar">Salvar</button>
@@ -82,11 +96,11 @@ function Perfil() {
 
         <div className="user-bio">
           <div className="user-img">
-            <img src="https://img.icons8.com/plasticine/1200/user-male-circle.jpg" alt="" width={"40%"}/>
+            <img src={usuarioLogado.imagem_link} alt="" width={"40%"}/>
           </div>
           <div className="user-biodesc">
             <h1>{usuarioLogado.nome}</h1>
-            <p>futura descrição</p>
+            <p>BIO</p>
           </div>
         </div>
 

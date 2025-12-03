@@ -76,14 +76,14 @@ app.post('/usuario', async (req, res) => {
 
 app.put('/usuario/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, bio, imagem_link } = req.body;
 
   try {
     // Se o usuário mandou senha nova E não está vazia
     if (senha && senha.trim() !== "") {
       const [result] = await pool.query(
-        "UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE id_usuario = ?",
-        [nome, email, senha, id]
+        "UPDATE usuario SET nome = ?, email = ?, senha = ?, bio = ?, imagem_link = ? WHERE id_usuario = ?",
+        [nome, email, senha, bio, imagem_link, id]
       );
       
       if (result.affectedRows === 0) {
@@ -92,8 +92,8 @@ app.put('/usuario/:id', async (req, res) => {
     } else {
       // Atualizar sem mexer na senha
       const [result] = await pool.query(
-        "UPDATE usuario SET nome = ?, email = ? WHERE id_usuario = ?",
-        [nome, email, id]
+        "UPDATE usuario SET nome = ?, email = ?, bio = ?, imagem_link = ? WHERE id_usuario = ?",
+        [nome, email, bio, imagem_link, id]
       );
       
       if (result.affectedRows === 0) {
