@@ -15,22 +15,7 @@ function Perfil() {
     const [senhaInput, setSenhaInput] = useState()
 
   const navegar = useNavigate()
-
-  const fetchUsuarios = async () => {
-    try {
-      const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`);
-      setUsuarioLogado(response.data);
-    } catch (error) {
-      console.error("Erro ao buscar usuário:", error);
-    }
-  }
-
-    const limparForm = () => {
-      setNomeInput('')
-      setEmailInput('')
-      setSenhaInput('')
-    }
-
+  
     const editarUsuario = async (e) => {
       e.preventDefault()
       try {
@@ -46,8 +31,18 @@ function Perfil() {
         const response = await axios.put(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`, usuario);
 
         if (response.status === 200) {
-          fetchUsuarios();
+          setUsuarioLogado(response.data)
           setIsOpen(false)
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Usuário atualizado com sucesso!",
+            showConfirmButton: false,
+            background: "var(--fundo)",
+            color: "var(--texto-principal)", 
+            iconColor: "var(--destaque)",
+            timer: 1200
+          });
         }
       }
       catch (error) {
@@ -90,8 +85,8 @@ function Perfil() {
             <img src="https://img.icons8.com/plasticine/1200/user-male-circle.jpg" alt="" width={"40%"}/>
           </div>
           <div className="user-biodesc">
-            <h1>teste</h1>
-            <p>teste</p>
+            <h1>{usuarioLogado.nome}</h1>
+            <p>futura descrição</p>
           </div>
         </div>
 

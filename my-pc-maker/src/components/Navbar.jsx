@@ -11,7 +11,7 @@ function Navbar() {
     </div>
     <nav className="nav-links">
         
-        <a href="#">Feed</a>
+        <Link to={"/montagem"}>Montar PC</Link>
         <Link to={"/perfil"}>Perfil</Link>
     </nav>
     </header>

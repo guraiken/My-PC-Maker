@@ -96,14 +96,15 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
-                padding: 0 10px 10px 0;
+                justify-content: space-evenly;
+                flex-wrap: wrap;
             
         
 
                 width: 50%;
                 height: 100%;
                 font-size: clamp(0.5rem, 1.5vw, 1rem);
+                padding: 10px;
             }
 
     .lower-div {

@@ -133,17 +133,22 @@ const logarUsuario = async () => {
         // 1. VALIDAR CAMPOS OBRIGATÓRIOS
         if (!emailInput || !senhaInput) {
             return Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Preencha todos os campos!",
-                text: "Verifique os campos preenchidos.",
-                showConfirmButton: false,
-                background: "var(--fundo)",
-                color: "var(--texto-principal)", 
-                iconColor: "var(--destaque)",
-                timer: 1500,
-                toast: true
-            });
+                    position: "top",
+                    icon: "error",
+                    title: "Preencha todos os campos!",
+                    customClass: {
+                        timerProgressBar: 'progressBar'
+                    },
+                    text: "Verifique os campos preenchidos.",
+                    showConfirmButton: false,
+                    background: "var(--fundo)",
+                    color: "var(--texto-principal)", 
+                    iconColor: "var(--destaque)",
+                    timer: 1500,
+                    timerProgressBar: 1500, 
+                    width: "30%",
+                    toast: true
+                })
         }
 
         // 2. VERIFICAR SE USUÁRIO EXISTE
