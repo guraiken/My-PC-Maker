@@ -79,7 +79,7 @@ app.put('/usuario/:id', async (req, res) => {
     const { nome, senha, email,  } = req.body;
     try {
         const [result] = await pool.query(
-            'UPDATE usuario SET nome = ?, endereco = ?, senha = ?, email = ? WHERE id_usuario = ?',
+            'UPDATE usuario SET nome = ?, senha = ?, email = ? WHERE id_usuario = ?',
             [nome, senha, email, id]
         );
         if (result.affectedRows === 0) {

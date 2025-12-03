@@ -6,11 +6,54 @@ import "./Perfil.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
+import axios from "axios"
 
 function Perfil() {
   const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen} = useContext(GlobalContext)
+    const [nomeInput, setNomeInput] = useState(usuarioLogado ? usuarioLogado.nome : '')
+    const [emailInput, setEmailInput] = useState(usuarioLogado ? usuarioLogado.email : '')
+    const [senhaInput, setSenhaInput] = useState('')
 
   const navegar = useNavigate()
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`);
+      setUsuarioLogado(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar usuário:", error);
+    }
+  }
+
+    const limparForm = () => {
+      setNomeInput('')
+      setEmailInput('')
+      setSenhaInput('')
+    }
+
+    const editarUsuario = async (e) => {
+      e.preventDefault()
+      try {
+        const usuario = {
+          nome: nomeInput,
+          email: emailInput,
+        };
+        if (senhaInput) {
+          usuario.senha = senhaInput;
+        }
+
+        const response = await axios.put(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`, usuario);
+
+        if (response.status === 200) {
+          fetchUsuarios();
+          limparForm();
+          setIsOpen(false)
+        }
+      }
+      catch (error) {
+        console.error("Erro ao editar usuário:", error)
+      }
+    }
 
   return (
     <section className="perfil-container">
@@ -19,13 +62,19 @@ function Perfil() {
       <Modal width={"35%"} height={"80%"}>
         <div className="perfil-edit">
           <h1>Editar Perfil</h1>
-          <form action="">
+          <form onSubmit={(e) => editarUsuario(e)}>
             <label htmlFor="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" placeholder={usuarioLogado ? usuarioLogado.nome : ""}/>
+            <input type="text" name="nome" placeholder={usuarioLogado.nome}
+            value={nomeInput} onChange={(e) => setNomeInput(e.target.value)}
+            />
             <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder={usuarioLogado ? usuarioLogado.email : ""}/>
+            <input type="email" name="email" placeholder={usuarioLogado.email}
+            value={emailInput} onChange={(e) => setEmailInput(e.target.value)}
+            />
             <label htmlFor="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" placeholder="********"/>
+            <input type="password" name="senha" placeholder="********"
+            value={senhaInput} onChange={(e) => setSenhaInput(e.target.value)}
+            />
             <div className="perfil-edit-buttons">
               <button type="submit" className="button-salvar">Salvar</button>
               <button type="button" className="button-cancelar" onClick={() => setIsOpen(false)}>Cancelar</button>
