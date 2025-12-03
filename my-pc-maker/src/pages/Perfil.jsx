@@ -1,20 +1,23 @@
+import Modal from "../components/Modal"
 import Navbar from "../components/Navbar"
 import SeletorCondicional from "../components/SeletorCondicional"
+import { GlobalContext } from "../contexts/globalContext"
 import "./Perfil.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
 function Perfil() {
-  
-  function editarPerfil(){
+  const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen} = useContext(GlobalContext)
 
-  }
-
+  const navegar = useNavigate()
 
   return (
     <section className="perfil-container">
       <Navbar/>
+      <Modal>
+        <h1>TESTE</h1>
+      </Modal>
 
       <div className="perfil-area">
 
@@ -45,8 +48,8 @@ function Perfil() {
 
           <div className="lower-div">
             <div className="user-buttons">
-              <button className="button-editar">Editar Conta</button>
-              <button className="button-sair">Sair</button>
+              <button className="button-editar" onClick={() => setIsOpen(true)}>Editar Conta</button>
+              <button className="button-sair" onClick={() => setUsuarioLogado(null)}>Sair</button>
             </div>
           </div>
         </div>

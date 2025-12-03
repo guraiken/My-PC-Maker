@@ -12,7 +12,7 @@ function ProtectedRoute({children}) {
     if (!usuarioLogado) {
         let timerInterval;
         Swal.fire({
-            title: "Usuário não logado",
+            title: "USUÁRIO DESLOGADO",
             html: "Redirecionando para o login em <b></b> segundos.",
             loaderHtml: '<div class="my-custom-spinner"></div>',
             customClass: {
@@ -23,7 +23,7 @@ function ProtectedRoute({children}) {
             background: "var(--profundidade)",
             color: "white",
             iconColor: "var(--destaque)",
-            timer: 3500,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: () => {
                 Swal.showLoading();
@@ -34,7 +34,7 @@ function ProtectedRoute({children}) {
             },
             willClose: () => {
                 clearInterval(timerInterval);
-                navegar('/login')
+                navegar('/')
             }
         }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {

@@ -182,7 +182,6 @@ const logarUsuario = async () => {
 
         // 4. LOGIN OK
         limparForm();
-        localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
         setUsuarioLogado(usuario);
 
         Swal.fire({
