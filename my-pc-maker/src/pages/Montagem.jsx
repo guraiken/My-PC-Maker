@@ -107,7 +107,7 @@ function Montagem() {
 
         const fetchParts = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/pecas?tipo=${sqlPartType}`);
+                const response = await fetch(`https://my-pc-maker-cq8f.vercel.app/api/pecas?tipo=${sqlPartType}`);
 
                 if (!response.ok) {
                     throw new Error(`Erro HTTP: ${response.status} ao buscar peças.`);
@@ -230,7 +230,11 @@ function Montagem() {
 
                     <div className="current-consumption-card">
                         <h3 className="consumption-title">CONSUMO ATUAL</h3>
-                        <p>**{totalConsumption}W**</p>
+                        <p>{totalConsumption}W</p>
+                    </div>
+
+                    <div className="save-button">
+                     <button className="button-save">Salvar</button>
                     </div>
                 </aside>
             </main>

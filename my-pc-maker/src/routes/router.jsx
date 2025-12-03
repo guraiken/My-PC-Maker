@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     {path: "/login", element: <AlreadyLogged><Login/></AlreadyLogged> },
     {path: "/montagem", element: <ProtectedRoute><Montagem/></ProtectedRoute> },
     {path: "/perfil", element: <ProtectedRoute><Perfil/></ProtectedRoute> },
-    {path: "/", element: <ProtectedRoute></ProtectedRoute> }
+    {path: "/", element: <ProtectedRoute> </ProtectedRoute> }
 
 ])
 
