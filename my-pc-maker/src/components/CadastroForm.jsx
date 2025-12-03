@@ -99,7 +99,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                     heightAuto: "20%",
                 })
                 setTimeout(() => {
-                    navegar('/login')
+                    navegar('/')
                 }, '1200')
             }
         }

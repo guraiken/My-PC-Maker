@@ -74,7 +74,7 @@ function Perfil() {
               <button type="submit" className="button-salvar">Salvar</button>
               <button type="button" className="button-cancelar" onClick={() => setIsOpen(false)}>Cancelar</button>
             </div>
-          </form>
+          </form> 
         </div>
       </Modal>
 
