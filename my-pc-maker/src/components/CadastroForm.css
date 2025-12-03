@@ -97,7 +97,7 @@
     font-weight: bold;
 }
 
-.cadastro-form-button button:hover {
+.cadastro-form-button button:hover, .login-form-button button:hover {
     transition: ease filter 0.1s, ease transform 0.1s;
     transform: scale(1.03);
     filter: brightness(1.2);

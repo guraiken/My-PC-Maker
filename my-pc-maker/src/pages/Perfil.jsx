@@ -15,8 +15,23 @@ function Perfil() {
   return (
     <section className="perfil-container">
       <Navbar/>
-      <Modal>
-        <h1>TESTE</h1>
+
+      <Modal width={"35%"} height={"80%"}>
+        <div className="perfil-edit">
+          <h1>Editar Perfil</h1>
+          <form action="">
+            <label htmlFor="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder={usuarioLogado ? usuarioLogado.nome : ""}/>
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder={usuarioLogado ? usuarioLogado.email : ""}/>
+            <label htmlFor="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" placeholder="********"/>
+            <div className="perfil-edit-buttons">
+              <button type="submit" className="button-salvar">Salvar</button>
+              <button type="button" className="button-cancelar" onClick={() => setIsOpen(false)}>Cancelar</button>
+            </div>
+          </form>
+        </div>
       </Modal>
 
       <div className="perfil-area">
@@ -36,7 +51,7 @@ function Perfil() {
             <div className="user-builds-container">
               <div className="user-builds">
                 <div className="build-icon">
-                  <img src="./public/svgs/pc-icon.svg" alt="" width={'40%'} />
+                  <img src="./svgs/pc-icon.svg" alt="" width={'40%'} />
                 </div>
                 <div className="build-stats">
                   <h1>Builds</h1>

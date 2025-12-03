@@ -11,18 +11,22 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    backdrop-filter: blur(2px);
 }
 
 .modal {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     width: 80%;
     height: 80%;
-
-    min-width: 600px;
     z-index: 1001;
+
+    background-color: var(--fundo);
+    border-radius: 15px;
+
 }
 
     .modal-top {
@@ -31,4 +35,21 @@
         align-items: center;
 
         height: 15%;
+        width: 100%;
+    }
+
+    .modal-top span {
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 2vw;
+    }
+
+    .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 85%;
+        width: 100%;
     }
