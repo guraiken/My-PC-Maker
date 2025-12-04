@@ -5,16 +5,17 @@ import { GlobalContext } from "../contexts/globalContext"
 import "./Perfil.css"
 import { useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Swal from 'sweetalert2'
 import axios from "axios"
 import ConfirmationAlert from "../components/Alerts/ConfirmationAlert"
+import Swal from 'sweetalert2'
+import { div, img, p } from "framer-motion/client"
 
 function Perfil() {
   const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen} = useContext(GlobalContext)
     const [nomeInput, setNomeInput] = useState(usuarioLogado.nome)
     const [emailInput, setEmailInput] = useState(usuarioLogado.email)
     const [senhaInput, setSenhaInput] = useState()
-    const [bioInput, setBioInput] = useState(usuarioLogado.bio ? usuarioLogado.bio : 'Escreva algo sobre você...')
+    const [bioInput, setBioInput] = useState()
     const [imagemLinkInput, setImagemLinkInput] = useState(usuarioLogado.imagem_link ? usuarioLogado.imagem_link : '')
 
   const navegar = useNavigate()
@@ -51,14 +52,43 @@ function Perfil() {
       }
     }
 
+  const deletarUsuario = async (e) => {
+    try {
+      Swal.fire({
+        title: "TEM CERTEZA?",
+        text: "Você não vai poder reverter isso depois!",
+        background: "var(--fundo)",
+        color: "var(--texto-principal)",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "var(--separacao)",
+        confirmButtonText: "Sim, delete a conta!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "DELETADA!",
+            text: "Sua conta foi deletada com sucesso.",
+            icon: "success"
+          });
+          axios.delete(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`);
+          setUsuarioLogado(null)
+          isOpen(false)
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao deletar cliente:', error);
+    }
+  };
+
   return (
     <section className="perfil-container">
       <Navbar/>
 
-      <Modal width={"35%"} height={"80%"}>
+      <Modal width={"35%"} height={"80%"} titulo={"EDITAR PERFIL"}>
         <div className="perfil-edit">
-          <h1>Editar Perfil</h1>
-          <form onSubmit={(e) => editarUsuario(e)}>
+          <form onSubmit={(e) => editarUsuario(e)} className="perfil-form">
 
             <label>Nome:</label>
             <input type="text" placeholder={nomeInput}
@@ -79,7 +109,6 @@ function Perfil() {
             <input type="text" placeholder="Exemplo: https://link-da-imagem.com/imagem.jpg"
             value={imagemLinkInput} onChange={(e) => setImagemLinkInput(e.target.value)}/>
 
-            <h1>Informações do Perfil</h1>
             <label>Bio:</label>
             <textarea type="text" 
             value={bioInput} onChange={(e) => setBioInput(e.target.value)}
@@ -88,6 +117,9 @@ function Perfil() {
               <button type="submit" className="button-salvar">Salvar</button>
               <button type="button" className="button-cancelar" onClick={() => setIsOpen(false)}>Cancelar</button>
             </div>
+              <div className="perfil-excluir-button">
+              <button type="button" className="button-excluir" onClick={(e) => deletarUsuario(e)}>Excluir Conta</button>
+              </div>
           </form> 
         </div>
       </Modal>
@@ -96,11 +128,17 @@ function Perfil() {
 
         <div className="user-bio">
           <div className="user-img">
-            <img src={usuarioLogado.imagem_link} alt="" width={"40%"}/>
+            { usuarioLogado.imagem_link ?
+              <img src={usuarioLogado.imagem_link} alt="" width={"65%"} height={"90%"}/>
+            :
+            <img src="./images/user-profile.png" alt="" width={"65%"} height={"90%"}/>
+            }
           </div>
           <div className="user-biodesc">
             <h1>{usuarioLogado.nome}</h1>
-            <p>BIO</p>
+            {usuarioLogado.bio ? <p>{usuarioLogado.bio}</p> 
+            : <p>Escreva algo sobre você...</p>
+            }
           </div>
         </div>
 

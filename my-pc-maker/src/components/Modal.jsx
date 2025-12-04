@@ -5,7 +5,7 @@ import { FaWindowClose } from "react-icons/fa";
 import { WiDayThunderstorm } from "react-icons/wi";
 
 
-function Modal({children, width, height}) {
+function Modal({children, width, height, titulo}) {
   
   const {isOpen, setIsOpen} = useContext(GlobalContext)
 
@@ -16,7 +16,8 @@ function Modal({children, width, height}) {
       <section className="modal-container">
       <div className="modal" style={{width : width ? width : '80%', height: height ? height : '80%'}}>
         <div className="modal-top">
-          <span onClick={() => setIsOpen(false)}><FaWindowClose/></span>
+          {titulo && <div className="modal-titulo"><h1>{titulo}</h1></div>}
+          <div className="modal-close-button"><span onClick={() => setIsOpen(false)}><FaWindowClose/></span></div>
         </div>
         <div className="modal-content">
             {children}

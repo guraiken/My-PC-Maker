@@ -35,17 +35,39 @@
         justify-content: center;
         align-items: center;
 
-        width: 40%;
-
+        width: 50%;
+        height: 60%;
+    }
+    .user-img img {
+        border-radius: 20px;
+        border-width: 10px;
+        border-color: var(--destaque);
+        border-style: outset;
     }
 
     .user-biodesc {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
         align-items: start;
 
         width: 60%;
+        height: 90%;
+        flex-wrap: wrap;
+    }
+
+    .user-biodesc h1 {
+        margin: 0;
+        padding: 0;
+        font-size: clamp(1rem, 4vw, 2.2rem);
+
+        font-weight: bold;
+    }
+
+    .user-biodesc p {
+        font-size: clamp(1rem, 1.6vw, 1.2rem);
+        text-align: start;
+        text-wrap: wrap;
     }
 
     .upper-div {
@@ -165,21 +187,104 @@
     align-items: center;
 }
 
-.perfil-edit form {
+.perfil-form {
     display: flex;
     flex-direction: column;
     text-align: center;
     justify-content: center;
     align-items: center;
 
-    gap: 10px;
-    width: 50%;
+    gap: 15px;
+    width: 100%;
 }
 
+.perfil-form label {
+    font-size: 1.2rem;
+    font-weight: bold;
+} 
 
+.perfil-form input {
+    border-radius: 20px;
+    border-style: none;
+    width: 100%;
+    height: 60px;
+    max-height: 80px;
+    padding: 10px 15px;
 
-        
+    background-color: var(--sub-texto);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    outline: none;
+}
 
+.perfil-form textarea {
+    border-radius: 20px;
+    border-style: none;
+    width: 100%;
+    height: 25vh;
+    max-height: 300px;
+    padding: 10px 15px;
+
+    background-color: var(--sub-texto);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    outline: none;
+    resize: none;
+}
+
+.perfil-edit-buttons {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+    height: 10%;
+} 
+
+.perfil-excluir-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+}
+
+.button-salvar, .button-cancelar, .button-excluir {
+    transition: ease transform 0.1s;
+    color: var(--texto-principal);
+    width: 60%;
+    height: 80%;
+    max-width: 400px;
+    border-radius: 30px;
+    border-style: none;
+    font-size: clamp(0.5rem, 1.5vw, 1.5rem);
+    font-family: "k2d";
+    font-weight: bold;
+}
+.button-salvar {
+    background-color: var(--destaque);
+}
+.button-cancelar {
+    background-color: var(--separacao);
+}
+.button-excluir {
+    transition: ease all 0.3s;
+    background-color: var(--sub-texto);
+    color: black;
+}
+
+.button-salvar:hover, .button-cancelar:hover, .button-excluir:hover {
+    transition: ease filter 0.1s;
+    filter: brightness(1.2);
+    cursor: pointer;
+}
+
+.button-excluir:hover {
+    transition: ease all 0.3s;
+    background-color: #d33;
+    color: white;
+}
 
 .perfil-second-area {
     display: flex;

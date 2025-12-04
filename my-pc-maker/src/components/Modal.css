@@ -15,6 +15,7 @@
 }
 
 .modal {
+    animation: modal-entrance 0.3s ease forwards;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,17 +27,33 @@
 
     background-color: var(--fundo);
     border-radius: 15px;
-
 }
 
     .modal-top {
         display: flex;
-        justify-content: end;
+        justify-content: center;
         align-items: center;
 
-        height: 15%;
+        height: 10%;
         width: 100%;
+        background-color: var(--separacao);
+        border-radius: 15px 15px 0 0;
     }
+
+       .modal-titulo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       }
+
+       .modal-close-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 2px;
+        top: -16px;
+       }
 
     .modal-top span {
         font-size: 2rem;
@@ -50,6 +67,20 @@
         justify-content: center;
         align-items: center;
 
-        height: 85%;
+        margin-top: 20px;
+
+        height: 90%;
         width: 100%;
+        overflow: scroll;
     }
+
+@keyframes modal-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
