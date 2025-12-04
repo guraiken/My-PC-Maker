@@ -101,7 +101,7 @@
         .user-builds {
             display: flex;
             width: 50%;
-            height: 70%;
+            height: 80%;
             
             background-color: var(--separacao);
 
@@ -118,16 +118,22 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: space-evenly;
-                flex-wrap: wrap;
+                justify-content: center;
             
-        
-
                 width: 50%;
                 height: 100%;
-                font-size: clamp(0.5rem, 1.5vw, 1rem);
                 padding: 10px;
             }
+                .build-stats p {
+                    margin: 0;
+                    padding: 0;
+                    font-size: clamp(0.8rem, 1.5vw, 1rem);
+                }
+                .build-stats h2 {
+                    margin: 0;
+                    padding: 0;
+                    font-size: clamp(1rem, 1.5vw, 1.8rem);
+                }
 
     .lower-div {
         display: flex;
@@ -193,6 +199,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
+
 
     gap: 15px;
     width: 100%;

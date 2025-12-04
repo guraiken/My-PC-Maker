@@ -15,7 +15,7 @@ function Perfil() {
     const [nomeInput, setNomeInput] = useState(usuarioLogado.nome)
     const [emailInput, setEmailInput] = useState(usuarioLogado.email)
     const [senhaInput, setSenhaInput] = useState()
-    const [bioInput, setBioInput] = useState()
+    const [bioInput, setBioInput] = useState(usuarioLogado.bio ? usuarioLogado.bio : 'Escreva algo sobre você...')
     const [imagemLinkInput, setImagemLinkInput] = useState(usuarioLogado.imagem_link ? usuarioLogado.imagem_link : '')
 
   const navegar = useNavigate()
@@ -86,7 +86,7 @@ function Perfil() {
     <section className="perfil-container">
       <Navbar/>
 
-      <Modal width={"35%"} height={"80%"} titulo={"EDITAR PERFIL"}>
+      <Modal width={"40%"} height={"85%"} titulo={"EDITAR PERFIL"}>
         <div className="perfil-edit">
           <form onSubmit={(e) => editarUsuario(e)} className="perfil-form">
 
@@ -106,6 +106,7 @@ function Perfil() {
             />
 
             <label>Imagem de Perfil:</label>
+            { imagemLinkInput && <div><img src={imagemLinkInput} alt="" width={"50%"}/></div>}
             <input type="text" placeholder="Exemplo: https://link-da-imagem.com/imagem.jpg"
             value={imagemLinkInput} onChange={(e) => setImagemLinkInput(e.target.value)}/>
 
@@ -150,7 +151,7 @@ function Perfil() {
                   <img src="./svgs/pc-icon.svg" alt="" width={'40%'} />
                 </div>
                 <div className="build-stats">
-                  <h1>Builds</h1>
+                  <h2>Builds</h2>
                   <span>0</span>
                 </div>
               </div>
