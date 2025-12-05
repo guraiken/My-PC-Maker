@@ -11,7 +11,7 @@ import Swal from 'sweetalert2'
 import { div, img, p } from "framer-motion/client"
 
 function Perfil() {
-  const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen} = useContext(GlobalContext)
+  const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen, usuarios, setUsuarios} = useContext(GlobalContext)
     const [nomeInput, setNomeInput] = useState(usuarioLogado.nome)
     const [emailInput, setEmailInput] = useState(usuarioLogado.email)
     const [senhaInput, setSenhaInput] = useState()
@@ -22,12 +22,56 @@ function Perfil() {
   
     const editarUsuario = async (e) => {
       e.preventDefault()
+      const usuarioExistente = usuarios.find((user) => user.email === emailInput);
+
+
       try {
         const usuario = {
           nome: nomeInput,
           email: emailInput,
           bio: bioInput
         };
+
+        if(!nomeInput || !emailInput){
+        Swal.fire({
+          title: "ERRO!",
+          text: "Nome e email são obrigatórios.",
+          icon: "error",
+          background: "var(--fundo)",
+          color: "var(--texto-principal)",
+        });
+        return;
+      }
+        if (emailInput && !emailInput.includes('@')) {
+          Swal.fire({
+            title: "ERRO!",
+            text: "O e-mail inserido não possui um formato válido.",
+            iconColor: "var(--destaque)",
+            icon: "error",
+            background: "var(--fundo)",
+            color: "var(--texto-principal)",
+            confirmButtonColor: "var(--destaque)"
+          });
+          return
+        }
+        if (usuarioExistente && usuarioExistente.id_usuario !== usuarioLogado.id_usuario) {
+          Swal.fire({
+            title: "ERRO!",
+            text: "O e-mail inserido já está em uso por outro usuário.",
+            iconColor: "var(--destaque)",
+            icon: "error",
+            background: "var(--fundo)",
+            color: "var(--texto-principal)",
+            toast: true,
+            showConfirmButton: false,
+            timer: 1200,
+            position: 'top',
+            timerProgressBar: true,
+            customClass: {timerProgressBar: 'progressBar'}
+          });
+          return;
+        }
+
         if (senhaInput) {
           usuario.senha = senhaInput;
         }

@@ -4,6 +4,7 @@ export const GlobalContext = createContext()
 
 export const GlobalContextProvider = ({children}) => {
     const [usuarioLogado, setUsuarioLogado] = useState(false)
+    const [usuarios, setUsuarios] = useState([])
 
     const [isOpen, setIsOpen] = useState(false)
     
@@ -11,7 +12,7 @@ export const GlobalContextProvider = ({children}) => {
     return(
         <GlobalContext.Provider 
         value={
-            {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen}}>
+            {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen, usuarios, setUsuarios}}>
             {children}
         </GlobalContext.Provider>
     )    

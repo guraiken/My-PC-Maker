@@ -16,8 +16,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
 
     const inputRefEmail = useRef(null)
     const inputRefUsuario = useRef(null)
-    const [usuarios, setUsuarios] = useState([])
-    const {usuarioLogado, setUsuarioLogado} = useContext(GlobalContext)
+    const {usuarioLogado, setUsuarioLogado, usuarios, setUsuarios} = useContext(GlobalContext)
 
     const navegar = useNavigate()
 
@@ -57,7 +56,13 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
         const buttonCadastro = e.nativeEvent.submitter.className
         const acharUser = usuarios.find(usuario => usuario.email === emailInput)
 
-        if (acharUser) {
+        if(buttonCadastro === "button-cadastro"){
+            const usuario = {
+                nome: usuarioInput,
+                senha: senhaInput,
+                email: emailInput
+            };
+            if (acharUser) {
                     Swal.fire({
                         position: "top",
                         icon: "error",
@@ -77,12 +82,18 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                  }) 
                  return;
             }
-        if(buttonCadastro === "button-cadastro"){
-            const usuario = {
-                nome: usuarioInput,
-                senha: senhaInput,
-                email: emailInput
-            };
+            if (emailInput && !emailInput.includes('@')) {
+                Swal.fire({
+                    title: "ERRO!",
+                    text: "O e-mail inserido não possui um formato válido.",
+                    iconColor: "var(--destaque)",
+                    icon: "error",
+                    background: "var(--fundo)",
+                    color: "var(--texto-principal)",
+                    confirmButtonColor: "var(--destaque)"
+                });
+                return
+            }
             if(usuarioInput == null || senhaInput == null || emailInput == null){
                 Swal.fire({
                     position: "top",
