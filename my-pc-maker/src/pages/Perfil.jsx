@@ -150,7 +150,7 @@ function Perfil() {
             />
 
             <label>Imagem de Perfil:</label>
-            { imagemLinkInput && <div><img src={imagemLinkInput} alt="" width={"50%"}/></div>}
+            { imagemLinkInput && <div className="user-img" style={{marginTop: "20px"}}><img src={imagemLinkInput} alt=""/></div>}
             <input type="text" placeholder="Exemplo: https://link-da-imagem.com/imagem.jpg"
             value={imagemLinkInput} onChange={(e) => setImagemLinkInput(e.target.value)}/>
 
@@ -174,9 +174,9 @@ function Perfil() {
         <div className="user-bio">
           <div className="user-img">
             { usuarioLogado.imagem_link ?
-              <img src={usuarioLogado.imagem_link} alt="" width={"65%"} height={"90%"}/>
+              <img src={usuarioLogado.imagem_link} alt=""/>
             :
-            <img src="./images/user-profile.png" alt="" width={"65%"} height={"90%"}/>
+            <img src="./images/user-profile.png" alt=""/>
             }
           </div>
           <div className="user-biodesc">

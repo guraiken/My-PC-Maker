@@ -31,18 +31,30 @@
         align-items: center;
     }
     .user-img {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+            width: clamp(100px, 30vw, 200px);
+            height: clamp(100px, 30vw, 200px);
+            
+            border-radius: 50%;
+            
+            overflow: hidden; 
+            
+            /* Borda de Destaque */
+            border: 4px solid var(--destaque); 
+            padding: 4px;
+            margin: 0 auto 20px auto;
+            background-color: var(--fundo);
 
-        width: 50%;
-        height: 60%;
+            
     }
+
     .user-img img {
-        border-radius: 20px;
-        border-width: 10px;
-        border-color: var(--destaque);
-        border-style: outset;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        
+        /* Garante que a imagem dentro do wrapper também seja circular */
+        border-radius: 50%;
+        display: block;
     }
 
     .user-biodesc {
