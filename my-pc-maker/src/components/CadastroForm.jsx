@@ -50,11 +50,34 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
         console.log(usuarios)
     }, [usuarios]);
 
+    
+
     const cadastrarUsuario = async (e) => {
         e.preventDefault()
         const buttonCadastro = e.nativeEvent.submitter.className
+        const acharUser = usuarios.find(usuario => usuario.email === emailInput)
+
+        if (acharUser) {
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "E-mail já cadastrado!",
+                        customClass: {
+                            timerProgressBar: 'progressBar'
+                        },
+                        text: "Utilize outro e-mail para cadastrar.",
+                        showConfirmButton: false,
+                        background: "var(--fundo)",
+                        color: "var(--texto-principal)",
+                        iconColor: "var(--destaque)",
+                        timer: 1500,
+                        timerProgressBar: 1500,
+                        width: "30%",
+                        toast: true
+                 }) 
+                 return;
+            }
         if(buttonCadastro === "button-cadastro"){
-            console.log(buttonCadastro)
             const usuario = {
                 nome: usuarioInput,
                 senha: senhaInput,
@@ -78,7 +101,7 @@ function CadastroForm({titulo,usuario, email, senha, nomeButton}) {
                     width: "30%",
                     toast: true
                 })
-                
+
             }else{
                 
             try{
