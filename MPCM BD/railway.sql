@@ -26,6 +26,8 @@ usuario_id INT NOT NULL,
 peca_id INT NOT NULL,
 FOREIGN KEY(usuario_id)
 REFERENCES usuario(id_usuario),
+FOREIGN KEY(peca_id)
+REFERENCES peca(id_peca)
 );
 
 CREATE TABLE computador_has_peca(
@@ -92,6 +94,10 @@ INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
 ('Fonte', 'teste63', 100, 20),
 ('Fonte', 'teste64', 100, 20)
 ;
+
+ALTER TABLE computador DROP FOREIGN KEY computador_ibfk_2;
+
+ALTER TABLE computador DROP COLUMN peca_id;
 
 SELECT * FROM usuario;
 
