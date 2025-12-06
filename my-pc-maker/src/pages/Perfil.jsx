@@ -126,6 +126,7 @@ function Perfil() {
     }
   };
 
+  
   return (
     <section className="perfil-container">
       <Navbar/>

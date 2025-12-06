@@ -1,26 +1,124 @@
+:root {
+    /* Cor de fundo principal do card/componente (Dark Indigo) */
+    --fundo-principal: #403060; 
+    /* Cor da barra superior e bordas do card (Lighter Indigo) */
+    --separacao: #52447A;      
+    /* Cor primária de destaque (Laranja Vibrante) */
+    --cor-destaque: #FFA500;   
+    /* Cor do texto principal */
+    --texto-claro: #f4f4f4;    
+}
+
+/* =========================================== */
+/* ESTILOS GERAIS DO COMPONENTE SELETOR        */
+/* =========================================== */
 .seletor-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 100%; /* Ajuste para não forçar altura fixa */
+    border-radius: 15px;
+    overflow: hidden;
+    /* Aplica o fundo escuro da imagem ao conteúdo geral também */
+ 
 }
 
 .seletor-bar {
+    /* Título Fixo no Topo */
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 15%;
-    border-radius: 15px 15px 0 0;
-
+    /* Altura reduzida para 10% para dar mais espaço ao conteúdo */
+    height: 10%; 
     background-color: var(--separacao);
+    color: var(--texto-claro);
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
 }
 
 .seletor-content {
+    /* MUDANÇA: Configuração para alinhar cartões lado a lado e permitir quebra */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--profundidade);
+    flex-wrap: wrap; /* Permite que os cartões quebrem para a próxima linha */
+    justify-content: flex-start; /* Alinha os cartões à esquerda */
+    align-items: flex-start;
+    gap: 20px; /* Espaçamento entre os cartões */
+    padding: 20px;
+    /* Fundo da área de conteúdo (onde os cards ficam) */
+    background-color: #783F8E;;
     width: 100%;
-    height: 90%;
+    height: 100%;
+    overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+}
+
+
+/* =========================================== */
+/* ESTILOS DO CARTÃO DE CONFIGURAÇÃO (.config-card) */
+/* =========================================== */
+.config-card {
+    background-color: var(--fundo-principal); /* Fundo Dark Indigo */
+    color: var(--texto-claro); /* Texto Branco */
+    padding: 20px;
+    margin: 0; /* Removido o margin extra, mantido o gap */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--separacao); /* Borda Lighter Indigo */
+    max-width: 450px; 
+    width: 100%;
+}
+
+.config-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Título do Cartão com a linha laranja */
+.config-card h4 {
+    color: var(--cor-destaque); /* Título em Laranja */
+    border-bottom: 2px solid var(--cor-destaque); /* Linha divisória Laranja */
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* Parágrafos e texto base */
+.config-card p {
+    margin: 5px 0;
+    font-size: 0.95em;
+}
+
+/* ------------------------------------------- */
+/* ESTILOS PARA DETALHES (LISTA DE PEÇAS) */
+/* ------------------------------------------- */
+.config-card details {
+    margin-top: 15px;
+    padding: 5px 0;
+    cursor: pointer;
+    user-select: none;
+    /* Cria a "borda pipe" vertical laranja da imagem */
+    border-left: 3px solid var(--cor-destaque); 
+    padding-left: 10px;
+}
+
+/* Título de Detalhes (Ver Peças Selecionadas) */
+.config-card summary {
+    font-weight: bold;
+    color: var(--texto-claro); /* Mantido branco para melhor leitura */
+    outline: none; /* Remove o contorno azul ao clicar no Chrome/Firefox */
+}
+
+/* Garante que a lista de peças também tenha o texto claro */
+.config-card ul {
+    color: var(--texto-claro);
+}
+
+/* Garante que o texto "Detalhes das peças não estão disponíveis." use o texto claro */
+.config-card details > p {
+    color: var(--texto-claro);
+    padding: 5px 0;
 }

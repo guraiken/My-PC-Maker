@@ -4,6 +4,8 @@ const mysql = require('mysql2/promise');
 require("dotenv").config()
 
 const app = express();
+const router = express.Router();
+
 const pool = mysql.createPool({
     host: process.env.HOST,
     user: process.env.USER,      // Altere para o nome do seu user no MySQL
@@ -15,8 +17,10 @@ const pool = mysql.createPool({
     port: process.env.PORT
 });
 
+
 app.use(cors());
 app.use(express.json());
+app.use('/api', router)
 
 app.get('/usuario', async (req, res) => {
     try {
@@ -142,7 +146,6 @@ app.get('/api/pecas', async (req, res) => {
     }
 
     try {
-        // Consulta o banco de dados filtrando pelo TIPO
         const [rows] = await pool.query(
             'SELECT id_peca, tipo, modelo, preco, watts_consumidos, link_imagem FROM peca WHERE tipo = ?',
             [tipo]
@@ -157,68 +160,97 @@ app.get('/api/pecas', async (req, res) => {
 });
 
 
-app.post('/api/computador', async (req, res) => {
+router.post('/computador', async (req, res) => {
     const { potencia_necessaria, preco_estimado, usuario_id, pecas } = req.body;
+    const connection = await pool.getConnection();
 
-    if (!usuario_id || !pecas || pecas.length === 0) {
-        return res.status(400).json({ error: 'Dados incompletos: usuario_id e pecas são obrigatórios.' });
-    }
-
-    let connection;
     try {
-        connection = await pool.getConnection();
-        await connection.beginTransaction(); 
-
-        
+        await connection.beginTransaction();
 
         const [resultComputador] = await connection.query(
-        'INSERT INTO computador (potencia_necessaria, preco_estimado, usuario_id) VALUES (?, ?, ?)',
-        [potencia_necessaria, preco_estimado, usuario_id]
+            'INSERT INTO computador (potencia_necessaria, preco_estimado, usuario_id) VALUES (?, ?, ?)',
+            [potencia_necessaria, preco_estimado, usuario_id]
         );
 
         const computadorId = resultComputador.insertId;
 
-        const values = pecas.map(peca => [
-            peca.id_peca,
-            computadorId
-        ]);
+      
+        const insertedPecaIds = new Set();
+        const pecasToInsert = [];
         
-        const insertQuery = 'INSERT INTO computador_has_peca (peca_id, computador_id) VALUES ?';
-        await connection.query(insertQuery, [values]);
+        pecas.forEach(peca => {
+            if (!insertedPecaIds.has(peca.id_peca)) {
+                pecasToInsert.push([
+                    computadorId,
+                    peca.id_peca
+                ]);
+                insertedPecaIds.add(peca.id_peca);
+            }
+        });
 
-        await connection.commit(); 
+        if (pecasToInsert.length > 0) {
+            const sqlPecas = 'INSERT INTO computador_has_peca (computador_id, peca_id) VALUES ?';
+            await connection.query(sqlPecas, [pecasToInsert]);
+        }
 
+        await connection.commit();
+        
         res.status(201).json({ 
-            message: 'Configuração salva com sucesso', 
+            message: 'Configuração salva com sucesso!', 
             id_computador: computadorId 
         });
 
-    } catch (err) {
-        if (connection) {
-            await connection.rollback(); 
-        }
-        console.error('Erro ao salvar configuração do computador:', err.message);
-        res.status(500).json({ error: 'Erro interno ao salvar a configuração.' });
+    } catch (error) {
+        await connection.rollback();
+        console.error("ERRO ao salvar configuração (Transação Revertida):", error);
+        res.status(500).json({ error: "Erro interno ao salvar a configuração e suas peças." });
     } finally {
-        if (connection) {
-            connection.release(); 
-        }
+        connection.release();
     }
 });
 
 
-app.get('/api/computador/usuario/:id', async (req, res) => {
-    const { id } = req.params; 
+router.get('/computador/usuario/:id', async (req, res) => {
+    const { id: userId } = req.params;
 
     try {
-        const [rows] = await pool.query(
-            'SELECT id_computador, potencia_necessaria, preco_estimado FROM computador WHERE usuario_id = ? ORDER BY id_computador DESC', 
-            [id]
+        const sqlConfigs = 'SELECT id_computador, potencia_necessaria, preco_estimado FROM computador WHERE usuario_id = ?';
+        const [configsBasicas] = await pool.query(sqlConfigs, [userId]);
+
+        if (configsBasicas.length === 0) {
+            return res.status(200).json([]);
+        }
+
+        const configsComPecas = await Promise.all(
+            configsBasicas.map(async (config) => {
+                
+                const sqlPecas = `
+                    SELECT 
+                        p.modelo,
+                        p.tipo
+                    FROM 
+                        peca p
+                    INNER JOIN 
+                        computador_has_peca cp ON p.id_peca = cp.peca_id
+                    WHERE 
+                        cp.computador_id = ?;
+                `;
+                
+                const [pecas] = await pool.query(sqlPecas, [config.id_computador]); 
+                
+                return {
+                    ...config,
+                    preco_estimado: parseFloat(config.preco_estimado).toFixed(2),
+                    potencia_necessaria: parseFloat(config.potencia_necessaria).toFixed(1),
+                    pecas: pecas || []
+                };
+            })
         );
         
-        res.status(200).json(rows);
-    } catch (err) {
-        console.error("Erro ao buscar montagens do usuário:", err.message);
-        res.status(500).json({ error: 'Erro interno ao buscar as montagens.' });
+        res.status(200).json(configsComPecas); 
+        
+    } catch (error) {
+        console.error("ERRO CRÍTICO NA BUSCA DE CONFIGURAÇÕES:", error);
+        res.status(500).json({ error: "Erro interno ao buscar as configurações." });
     }
 });

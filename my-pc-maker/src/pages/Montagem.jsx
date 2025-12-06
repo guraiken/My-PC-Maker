@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import './Montagem.css';
 import Navbar from '../components/Navbar';
 import { span } from 'framer-motion/client';
+import { GlobalContext } from '../contexts/globalContext';
 
 const ProductCard = ({ name, partType, onSelect, pecaData }) => (
     <div className="product-card" onClick={() => onSelect(partType, pecaData)}>
@@ -16,6 +17,7 @@ const ProductCard = ({ name, partType, onSelect, pecaData }) => (
 function Montagem() {
     const partTypes = ['Processador', 'Placa Mãe', 'Placa de Vídeo', 'Memória RAM', 'Armazenamento', 'Fonte'];
     const [activePart, setActivePart] = useState('Processador');
+    const { usuarioLogado } = useContext(GlobalContext);
 
     const [availableParts, setAvailableParts] = useState([]);
 
@@ -126,67 +128,86 @@ function Montagem() {
     }, [activePart]);
 
 
-    const DUMMY_USER_ID = 1; 
+ 
 
-    const handleSaveConfig = async () => {
-        const requiredParts = ['Processador', 'Placa Mãe', 'Placa de Vídeo', 'Memória RAM', 'Armazenamento', 'Fonte'];
+  const handleSaveConfig = async () => {
+    
+   
+    if (!usuarioLogado || typeof usuarioLogado !== 'object' || !usuarioLogado.id_usuario) {
+        alert("Você precisa estar logado para salvar uma montagem!");
+        return; 
+    }
+
+    // 2. PREPARAÇÃO DO ARRAY DE PEÇAS (TRATA MÚLTIPLAS RAMS E FILTRA CATEGORIAS)
+    
+    // Converte o objeto selectedParts em um array de entradas [tipo, valor]
+    const entries = Object.entries(selectedParts);
+
+    // Filtra apenas as categorias que realmente possuem uma peça selecionada
+    const pecasSelecionadasValidas = entries.filter(([type, entry]) => {
+        // Se for RAM, a peça está em entry.peca
+        if (type === 'Memória RAM') {
+            return entry?.peca !== null;
+        }
+        // Para todas as outras, a peça é o próprio entry (não nulo)
+        return entry !== null && entry.modelo;
+    });
+
+
+    // 2. VALIDAÇÃO CORRETA: Verifica se 6 CATEGORIAS têm peças.
+    const categoriesSelected = pecasSelecionadasValidas.length;
+
+    if (categoriesSelected < 6) { 
+        alert("Selecione todas as 6 categorias de peças para salvar.");
+        console.log('Peças selecionadas (para validação):', pecasSelecionadasValidas);
+        return;
+    }
+
+    // 3. Prepara a array final (pecasToSave) para o Backend (incluindo RAM multiplicada)
+    const pecasToSave = pecasSelecionadasValidas.flatMap(([type, entry]) => {
         
-        for (const partType of requiredParts) {
-            let partEntry = selectedParts[partType];
-            
-            if (!partEntry || (partType === 'Memória RAM' && !partEntry.peca)) {
-                alert(`Por favor, selecione uma peça para ${partType} antes de salvar.`);
-                return;
-            }
+        if (type === 'Memória RAM') {
+            // Retorna a peça (entry.peca) multiplicada pela quantidade
+            return Array(entry.quantidade).fill(entry.peca);
         }
         
-        const piecesPayload = Object.entries(selectedParts)
-            .map(([partType, partEntry]) => {
-                let pieceId = null;
-                let quantity = 1;
-                
-                if (partType === 'Memória RAM') {
-                    if (partEntry && partEntry.peca) {
-                        pieceId = partEntry.peca.id_peca;
-                        quantity = partEntry.quantidade;
-                    }
-                } else if (partEntry) {
-                    pieceId = partEntry.id_peca;
-                }
-                
-                 return pieceId ? { id_peca: pieceId, tipo: partType, quantidade: quantity } : null;
-            })
-            .filter(item => item !== null);
+        // Outras peças são enviadas 1x
+        return [entry]; 
+    });
 
-        const configData = {
-            potencia_necessaria: parseFloat(totalConsumption), 
-            preco_estimado: parseFloat(totalPrice),           
-            usuario_id: DUMMY_USER_ID,
-            pecas: piecesPayload
-        };
-        
-        try {
-            const response = await fetch(`https://my-pc-maker-cq8f.vercel.app/api/computador`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(configData),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `Erro HTTP: ${response.status} ao salvar a configuração.`);
-            }
-
-            const savedConfig = await response.json();
-            alert(`Configuração salva com sucesso! ID: ${savedConfig.id_computador}`);
-        } catch (error) {
-            console.error('Falha ao salvar a configuração:', error.message);
-            alert(`Erro ao salvar a configuração: ${error.message}`);
-        }
+    // AQUI O CÓDIGO CONTINUA COM O PAYLOAD E O FETCH
+    const payload = {
+        potencia_necessaria: totalConsumption,
+        preco_estimado: totalPrice,
+        usuario_id: usuarioLogado.id_usuario,
+        pecas: pecasToSave // Este array contém objetos completos das peças, o que é aceito no backend
     };
+    
+    // Linha de log corrigida para mostrar as peças que VÃO ser salvas
+    console.log('Peças a serem salvas (incluindo múltiplas RAMs):', pecasToSave);
 
+
+    try {
+        const response = await fetch(`https://my-pc-maker-cq8f.vercel.app/api/computador`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Erro desconhecido do servidor.');
+        }
+
+        alert("Configuração salva com sucesso!");
+
+    } catch (error) {
+        console.error("Falha ao salvar a configuração:", error);
+        alert(`Falha ao salvar a configuração: ${error.message}`);
+    }
+};
     return (
         <>
             <Navbar />
