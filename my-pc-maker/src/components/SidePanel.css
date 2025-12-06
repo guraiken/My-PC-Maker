@@ -41,13 +41,37 @@
         .panel-left-bottom {
             display: flex;
             justify-content: center;
-            align-items: end;
+            align-items: center;
             width: 80%;
             height: 25%;
             background-color: var(--separacao);
             border-radius: 25px 25px 0 0;
         }
         .panel-left-bottom img {
-            animation: normal initial-animation 1s;
+            animation: forwards initial-animation 1s ease-in-out;
+            animation: infinite floating 3s ease-in-out;
             filter: drop-shadow(0 0 10px white);
         }
+
+@keyframes floating {
+    0% {
+        transform: translateY(0px);
+        rotate: 0deg;
+    }
+    25%{
+        transform: translateY(50px);
+        rotate: 4deg;
+    }
+    50% {
+        transform: translateY(60px);
+        rotate: -4deg;
+    }
+    75%{
+        transform: translateY(150px);
+        rotate: 3deg;
+    }
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
