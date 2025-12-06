@@ -172,8 +172,8 @@ app.post('/api/computador', async (req, res) => {
         
 
         const [resultComputador] = await connection.query(
-            'INSERT INTO computador (potencia_necessaria, preco_estimado, usuario_id, peca_id) VALUES (?, ?, ?, ?)',
-            [potencia_necessaria, preco_estimado, usuario_id, pecas[0].id_peca] 
+        'INSERT INTO computador (potencia_necessaria, preco_estimado, usuario_id) VALUES (?, ?, ?)',
+        [potencia_necessaria, preco_estimado, usuario_id]
         );
 
         const computadorId = resultComputador.insertId;
