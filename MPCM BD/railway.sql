@@ -26,8 +26,6 @@ usuario_id INT NOT NULL,
 peca_id INT NOT NULL,
 FOREIGN KEY(usuario_id)
 REFERENCES usuario(id_usuario),
-FOREIGN KEY(peca_id)
-REFERENCES peca(id_peca)
 );
 
 CREATE TABLE computador_has_peca(
