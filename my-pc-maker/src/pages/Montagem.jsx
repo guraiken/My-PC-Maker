@@ -126,6 +126,67 @@ function Montagem() {
     }, [activePart]);
 
 
+    const DUMMY_USER_ID = 1; 
+
+    const handleSaveConfig = async () => {
+        const requiredParts = ['Processador', 'Placa Mãe', 'Placa de Vídeo', 'Memória RAM', 'Armazenamento', 'Fonte'];
+        
+        for (const partType of requiredParts) {
+            let partEntry = selectedParts[partType];
+            
+            if (!partEntry || (partType === 'Memória RAM' && !partEntry.peca)) {
+                alert(`Por favor, selecione uma peça para ${partType} antes de salvar.`);
+                return;
+            }
+        }
+        
+        const piecesPayload = Object.entries(selectedParts)
+            .map(([partType, partEntry]) => {
+                let pieceId = null;
+                let quantity = 1;
+                
+                if (partType === 'Memória RAM') {
+                    if (partEntry && partEntry.peca) {
+                        pieceId = partEntry.peca.id_peca;
+                        quantity = partEntry.quantidade;
+                    }
+                } else if (partEntry) {
+                    pieceId = partEntry.id_peca;
+                }
+                
+                 return pieceId ? { id_peca: pieceId, tipo: partType, quantidade: quantity } : null;
+            })
+            .filter(item => item !== null);
+
+        const configData = {
+            potencia_necessaria: parseFloat(totalConsumption), 
+            preco_estimado: parseFloat(totalPrice),           
+            usuario_id: DUMMY_USER_ID,
+            pecas: piecesPayload
+        };
+        
+        try {
+            const response = await fetch(`https://my-pc-maker-cq8f.vercel.app/api/computador`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(configData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Erro HTTP: ${response.status} ao salvar a configuração.`);
+            }
+
+            const savedConfig = await response.json();
+            alert(`Configuração salva com sucesso! ID: ${savedConfig.id_computador}`);
+        } catch (error) {
+            console.error('Falha ao salvar a configuração:', error.message);
+            alert(`Erro ao salvar a configuração: ${error.message}`);
+        }
+    };
+
     return (
         <>
             <Navbar />
@@ -234,7 +295,7 @@ function Montagem() {
                     </div>
 
                     <div className="save-button">
-                     <button className="button-save">Salvar</button>
+                     <button className="button-save" onClick={handleSaveConfig}>Salvar</button>
                     </div>
                 </aside>
             </main>

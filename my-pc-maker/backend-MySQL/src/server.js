@@ -155,3 +155,70 @@ app.get('/api/pecas', async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao buscar peças' });
     }
 });
+
+
+app.post('/api/computador', async (req, res) => {
+    const { potencia_necessaria, preco_estimado, usuario_id, pecas } = req.body;
+
+    if (!usuario_id || !pecas || pecas.length === 0) {
+        return res.status(400).json({ error: 'Dados incompletos: usuario_id e pecas são obrigatórios.' });
+    }
+
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        await connection.beginTransaction(); 
+
+        
+
+        const [resultComputador] = await connection.query(
+        'INSERT INTO computador (potencia_necessaria, preco_estimado, usuario_id) VALUES (?, ?, ?)',
+        [potencia_necessaria, preco_estimado, usuario_id]
+        );
+
+        const computadorId = resultComputador.insertId;
+
+        const values = pecas.map(peca => [
+            peca.id_peca,
+            computadorId
+        ]);
+        
+        const insertQuery = 'INSERT INTO computador_has_peca (peca_id, computador_id) VALUES ?';
+        await connection.query(insertQuery, [values]);
+
+        await connection.commit(); 
+
+        res.status(201).json({ 
+            message: 'Configuração salva com sucesso', 
+            id_computador: computadorId 
+        });
+
+    } catch (err) {
+        if (connection) {
+            await connection.rollback(); 
+        }
+        console.error('Erro ao salvar configuração do computador:', err.message);
+        res.status(500).json({ error: 'Erro interno ao salvar a configuração.' });
+    } finally {
+        if (connection) {
+            connection.release(); 
+        }
+    }
+});
+
+
+app.get('/api/computador/usuario/:id', async (req, res) => {
+    const { id } = req.params; // id é o id_usuario
+
+    try {
+        const [rows] = await pool.query(
+            'SELECT id_computador, potencia_necessaria, preco_estimado FROM computador WHERE usuario_id = ? ORDER BY id_computador DESC', 
+            [id]
+        );
+        
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error("Erro ao buscar montagens do usuário:", err.message);
+        res.status(500).json({ error: 'Erro interno ao buscar as montagens.' });
+    }
+});

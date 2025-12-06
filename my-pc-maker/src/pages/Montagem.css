@@ -323,4 +323,5 @@ body {
 
         .button-save {
             background-color: var(--destaque);       
+            cursor: pointer;
         }
