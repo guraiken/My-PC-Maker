@@ -15,7 +15,6 @@
 }
 
 .modal {
-    animation: modal-entrance 0.3s ease forwards;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,27 +38,29 @@
         background-color: var(--separacao);
         border-radius: 15px 15px 0 0;
     }
+        .div-linguica {
+            display: flex;
+            width: 20%;
+        }
 
        .modal-titulo {
         display: flex;
         justify-content: center;
-        align-items: center;
+        width: 60%;
        }
 
        .modal-close-button {
         display: flex;
+        width: 20%;
+        height: 100%;
         justify-content: center;
         align-items: center;
-        position: absolute;
-        right: 2px;
-        top: -16px;
        }
 
     .modal-top span {
         font-size: 2rem;
         font-weight: bold;
         cursor: pointer;
-        margin: 2vw;
     }
 
     .modal-content {

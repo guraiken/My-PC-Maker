@@ -1,8 +1,16 @@
 import "./SidePanel.css"
+import { motion, transform } from "framer-motion"
 
-function SidePanel({titulo, texto}) {
+function SidePanel({titulo, texto, panelDirection}) {
+    
   return (
-      <div className="panel-left">
+      <motion.div className="panel-left"
+        initial={{opacity: 1, x: panelDirection === "left" ? "100%" : "-100%", filter: "blur(1px)"}}
+        animate={{opacity: 1, x: 0, filter: "blur(0px)"}}
+        transition={{
+            type: "spring", stiffness: 120, damping: 20, ease: "easeInOut", duration: 0.5
+        }}
+      >
           <div className="panel-left-center">
               <img src="./images/logo-grande.png" alt="" width={"35%"} />
               <div className="panel-left-texto">
@@ -14,9 +22,9 @@ function SidePanel({titulo, texto}) {
           </div>
 
           <div className="panel-left-bottom">
-              <img src="https://pcnetinformatica.com.br/wp-content/uploads/2023/04/produtos-pcgamers-1024x1024.png" alt="" width={"45%"} />
+              <img src="./svgs/pc-icon.svg" alt="" width={"20%"} style={{transform: "rotate(10deg)"}}/>
           </div>
-      </div>
+      </motion.div>
   )
 }
 

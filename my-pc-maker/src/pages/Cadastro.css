@@ -1,10 +1,15 @@
 .cadastro-container { 
     display: flex;
     min-height: 100vh;
-    background-color: red;
     flex-direction: row;
 
     font-family: "k2d";
+}
+
+::-webkit-scrollbar {
+    display: none;
+    width: 0; /* Garante que não haja espaço reservado */
+    height: 0;
 }
 
 .cadastro-container a {
