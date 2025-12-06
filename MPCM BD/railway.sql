@@ -1,3 +1,5 @@
+CREATE DATABASE railway;
+
 USE railway;
 
 CREATE TABLE usuario(
@@ -95,9 +97,12 @@ INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
 ('Fonte', 'teste64', 100, 20)
 ;
 
+
 ALTER TABLE computador DROP FOREIGN KEY computador_ibfk_2;
 
 ALTER TABLE computador DROP COLUMN peca_id;
 
 SELECT * FROM usuario;
+
+SHOW CREATE TABLE computador;
 
