@@ -208,7 +208,7 @@ app.post('/api/computador', async (req, res) => {
 
 
 app.get('/api/computador/usuario/:id', async (req, res) => {
-    const { id } = req.params; // id é o id_usuario
+    const { id } = req.params; 
 
     try {
         const [rows] = await pool.query(

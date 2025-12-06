@@ -107,6 +107,13 @@ INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
 ('Fonte', 'teste63', 100, 20),
 ('Fonte', 'teste64', 100, 20)
 ;
+ALTER TABLE computador DROP FOREIGN KEY computador_ibfk_2;
+
+ALTER TABLE computador DROP COLUMN peca_id;
 
 SELECT * FROM usuario;
+
+SHOW CREATE TABLE computador;
+
+
 
