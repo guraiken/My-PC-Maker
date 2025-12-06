@@ -4,13 +4,10 @@
     flex-direction: row;
 
     font-family: "k2d";
+    overflow: hidden;
 }
 
-::-webkit-scrollbar {
-    display: none;
-    width: 0; /* Garante que não haja espaço reservado */
-    height: 0;
-}
+
 
 .cadastro-container a {
     color: var(--destaque);

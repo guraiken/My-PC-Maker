@@ -4,6 +4,7 @@
     flex-direction: row;
 
     font-family: "k2d";
+    overflow: hidden;
 }
 
 .login-container a {
