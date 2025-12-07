@@ -7,16 +7,15 @@ const app = express();
 const router = express.Router();
 
 const pool = mysql.createPool({
-    host: process.env.HOST,
-    user: process.env.USER,      // Altere para o nome do seu user no MySQL
-    password: process.env.PASSWORD,    // Altere para a senha correta
-    database: process.env.DATABASE,
+    host:"localhost",
+    user:"root",      // Altere para o nome do seu user no MySQL
+    password: "12345",    // Altere para a senha correta
+    database: "mpcm",
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    port: process.env.PORT
+    port: 3306
 });
-
 
 app.use(cors());
 app.use(express.json());
@@ -252,5 +251,35 @@ router.get('/computador/usuario/:id', async (req, res) => {
     } catch (error) {
         console.error("ERRO CRÍTICO NA BUSCA DE CONFIGURAÇÕES:", error);
         res.status(500).json({ error: "Erro interno ao buscar as configurações." });
+    }
+});
+
+
+router.delete('/computador/:id', async (req, res) => {
+    const { id: computadorId } = req.params;
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
+    
+        await connection.query('DELETE FROM computador_has_peca WHERE computador_id = ?', [computadorId]);
+
+        const [result] = await connection.query('DELETE FROM computador WHERE id_computador = ?', [computadorId]);
+
+        if (result.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).json({ error: 'Configuração de PC não encontrada' });
+        }
+
+        await connection.commit();
+        res.status(200).json({ message: 'Configuração deletada com sucesso' });
+
+    } catch (error) {
+        await connection.rollback();
+        console.error("ERRO ao deletar configuração (Transação Revertida):", error);
+        res.status(500).json({ error: "Erro interno ao deletar a configuração." });
+    } finally {
+        connection.release();
     }
 });
