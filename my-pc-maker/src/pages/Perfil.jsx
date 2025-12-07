@@ -127,13 +127,16 @@ function Perfil() {
     }
   };
 
-  async function buscarNumeroDeBuilds(id) {
+  const buscarNumeroDeBuilds = async (e) => {
     try {
         const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/usuario/computador/${usuarioLogado.id}`);
-        console.log(`Número de Builds do Usuário ${id}: ${numeroBuilds}`);
+        console.log(`Número de Builds do Usuário ${usuarioLogado.id}: ${numeroBuilds}`);
+        
+        const builds = response.data.numero_build
 
-        setNumeroBuilds(response.data.numero_builds)
-    } catch (error) {
+        setNumeroBuilds(builds)
+        
+      } catch (error) {
         if (error.response) {
             console.error(`Erro ao buscar builds: ${error.response.data.error || 'Erro desconhecido'}`);
         } else {
@@ -141,6 +144,10 @@ function Perfil() {
         }
     }
 }
+
+useEffect(()=> {
+    buscarNumeroDeBuilds()
+    }, []);
 
 
   

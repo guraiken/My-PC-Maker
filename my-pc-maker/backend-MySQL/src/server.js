@@ -254,21 +254,18 @@ router.get('/computador/usuario/:id', async (req, res) => {
     }
 });
 
-router.get('/computador/:id'), async (req, res) => {
-    const {id: computadorId} = req.params
-    const conection = await pool.getConnection()
-
+router.get('/computador/:id', async (req, res) => {
+    const {id} = req.params;
+    
     try {
         const [rows] = await pool.query('SELECT count(id_computador) AS numero_builds FROM computador JOIN usuario ON usuario_id = usuario.id_usuario WHERE usuario_id = ?', [id]);
-        if (rows.length === 0) {
-            return res.status(404).json({ error: 'Usuario não encontrado' });
-        }
         res.status(200).json(rows[0]);
+        
     } catch (err) {
         console.error(err.message);
-        res.status(500).json({ error: 'Erro ao buscar cliente' });
+        res.status(500).json({ error: 'Erro ao buscar builds do usuário' });
     }
-}
+});
 
 router.delete('/computador/:id', async (req, res) => {
     const { id: computadorId } = req.params;
