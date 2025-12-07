@@ -129,10 +129,11 @@ function Perfil() {
 
   const buscarNumeroDeBuilds = async (e) => {
     try {
-        const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/usuario/builds/${usuarioLogado.id}`);
+        const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/api/usuario/builds/${usuarioLogado.id_usuario}`);
         console.log(`Número de Builds do Usuário ${usuarioLogado.id}: ${numeroBuilds}`);
         
         const builds = response.data.numero_builds
+        console.log(builds)
 
         setNumeroBuilds(builds)
 
@@ -146,10 +147,10 @@ function Perfil() {
 }
 
 useEffect(()=> {
-    if (usuarioLogado && usuarioLogado.id_usuario) {
-        buscarNumeroDeBuilds()
-    }
-}, [usuarioLogado]);
+  if(usuarioLogado){
+    buscarNumeroDeBuilds()
+  }
+}, []);
 
 
   
