@@ -227,6 +227,13 @@ body {
     padding: 20px;
     text-align: center;
 }
+.current-consumption-card p {
+    /* REMOVE A CENTRALIZAÇÃO INERENTE AO CONTAINER PAI */
+    text-align: center; 
+    /* AJUSTE AQUI: Aumentado o espaçamento acima dos watts */
+   /* Adiciona 20px de margin-left para afastar */
+   margin-left: 60px;
+}
 
 .consumption-title {
     font-size: 1.2rem;
@@ -325,3 +332,22 @@ body {
             background-color: var(--destaque);       
             cursor: pointer;
         }
+
+        .consumption-header {
+    display: flex;
+    justify-content: center; /* Centraliza o bloco inteiro horizontalmente */
+    align-items: center; /* Alinha os itens verticalmente (no meio) */
+    gap: 10px; /* Espaço entre PEÇAS, / e CAPACIDADE */
+    margin-bottom: 5px; /* Reduz o espaço abaixo do título combinado */
+}
+
+/* Estilos para os títulos dentro do header */
+.consumption-header h4 {
+    margin: 0; 
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-light); 
+    margin-left: 5px;
+}
+
+/* Estilos específicos para a barra divisória */

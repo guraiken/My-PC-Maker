@@ -67,7 +67,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid var(--separacao); /* Borda Lighter Indigo */
-    max-width: 450px; 
+    max-width: 350px; 
     width: 100%;
 }
 
@@ -76,14 +76,24 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
+/* NOVO: Estilo para alinhar título e botão */
+.config-card-header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 5px; 
+}
+
 /* Título do Cartão com a linha laranja */
 .config-card h4 {
-    color: var(--cor-destaque); /* Título em Laranja */
-    border-bottom: 2px solid var(--cor-destaque); /* Linha divisória Laranja */
-    padding-bottom: 5px;
+    color: var(--cor-destaque); 
+    border-bottom: 2px solid var(--cor-destaque); 
+    padding-bottom: 3px; 
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0; 
     font-size: 1.2em;
+
+    margin-right: 5px; 
 }
 
 /* Parágrafos e texto base */
@@ -121,4 +131,22 @@
 .config-card details > p {
     color: var(--texto-claro);
     padding: 5px 0;
+}
+
+/* Estilo do Botão de Excluir */
+.button-excluir-config{
+    transition: ease transform 0.1s;
+    width: 100px; /* Tamanho fixo para o botão */
+    height: 30px; /* Altura menor */
+    max-width: 400px;
+    border-radius: 30px;
+    border-style: none;
+    font-size: 0.9rem; /* Fonte menor */
+    font-family: "k2d";
+    font-weight: bold;
+    color: white;
+    background-color: red;
+    flex-shrink: 0; /* Impede que o botão encolha */
+    margin-left: 10px; /* Adiciona um espaço entre o título e o botão */
+    cursor: pointer;
 }

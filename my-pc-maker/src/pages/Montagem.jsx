@@ -21,17 +21,14 @@ function Montagem() {
 
     const [availableParts, setAvailableParts] = useState([]);
 
-    // 1. Inicializa Memória RAM com uma estrutura de objeto que inclui 'quantidade'
     const [selectedParts, setSelectedParts] = useState({
-        'Memória RAM': { peca: null, quantidade: 1 } // Inicializa RAM com quantidade 1
+        'Memória RAM': { peca: null, quantidade: 1 }
     });
 
 
-    // 2. Ajusta handlePartSelection para lidar com RAM vs. outras peças
     const handlePartSelection = (partType, product) => {
         setSelectedParts(prevParts => {
             if (partType === 'Memória RAM') {
-                // Para RAM, atualiza a subpropriedade 'peca' e mantém a 'quantidade'
                 return {
                     ...prevParts,
                     [partType]: {
@@ -40,7 +37,6 @@ function Montagem() {
                     }
                 };
             } else {
-                // Para outras peças, armazena o produto diretamente
                 return {
                     ...prevParts,
                     [partType]: product
@@ -49,13 +45,12 @@ function Montagem() {
         });
     };
 
-    // 3. Função para aumentar/diminuir a quantidade de RAM
     const handleRamQuantityChange = (delta) => {
         setSelectedParts(prevParts => {
             const currentRam = prevParts['Memória RAM'];
-            if (!currentRam || !currentRam.peca) return prevParts; // Peça não selecionada
+            if (!currentRam || !currentRam.peca) return prevParts;
 
-            const newQuantity = Math.max(1, currentRam.quantidade + delta); // Mínimo 1
+            const newQuantity = Math.max(1, currentRam.quantidade + delta);
 
             return {
                 ...prevParts,
@@ -67,39 +62,34 @@ function Montagem() {
         });
     };
 
-    // 4. Ajusta useMemo para incluir a quantidade no cálculo de RAM
-    const { totalConsumption, totalPrice } = useMemo(() => {
+    const { totalConsumption, totalPrice, psuCapacity } = useMemo(() => {
         const partsArray = Object.entries(selectedParts);
 
-        // Função para calcular o consumo total
-        const totalConsumption = partsArray.reduce((sum, [partType, part]) => {
-            if (!part) return sum;
+        let consumptionWithoutPSU = 0;
+        let psuWattage = 0;
+        let totalPrice = 0;
 
-            // Verifica se é RAM e obtém a peça e a quantidade
+        partsArray.forEach(([partType, part]) => {
+            if (!part) return;
+
             let item = partType === 'Memória RAM' ? part.peca : part;
             let quantity = partType === 'Memória RAM' ? (part.quantidade || 1) : 1;
 
-            if (!item) return sum; // Se a RAM foi inicializada, mas a peça não foi selecionada
+            if (!item) return;
 
-            return sum + ((parseFloat(item.watts_consumidos) || 0) * quantity);
-        }, 0);
+            totalPrice += ((parseFloat(item.preco) || 0) * quantity);
 
-        // Função para calcular o preço total
-        const totalPrice = partsArray.reduce((sum, [partType, part]) => {
-            if (!part) return sum;
-
-            // Verifica se é RAM e obtém a peça e a quantidade
-            let item = partType === 'Memória RAM' ? part.peca : part;
-            let quantity = partType === 'Memória RAM' ? (part.quantidade || 1) : 1;
-
-            if (!item) return sum; // Se a RAM foi inicializada, mas a peça não foi selecionada
-
-            return sum + ((parseFloat(item.preco) || 0) * quantity);
-        }, 0);
+            if (partType === 'Fonte') {
+                psuWattage = parseFloat(item.watts_consumidos) || 0;
+            } else {
+                consumptionWithoutPSU += ((parseFloat(item.watts_consumidos) || 0) * quantity);
+            }
+        });
 
         return {
-            totalConsumption: totalConsumption.toFixed(1),
-            totalPrice: totalPrice.toFixed(2)
+            totalConsumption: consumptionWithoutPSU.toFixed(1),
+            totalPrice: totalPrice.toFixed(2),
+            psuCapacity: psuWattage
         };
     }, [selectedParts]);
 
@@ -128,86 +118,79 @@ function Montagem() {
     }, [activePart]);
 
 
- 
 
-  const handleSaveConfig = async () => {
-    
-   
-    if (!usuarioLogado || typeof usuarioLogado !== 'object' || !usuarioLogado.id_usuario) {
-        alert("Você precisa estar logado para salvar uma montagem!");
-        return; 
-    }
 
-    // 2. PREPARAÇÃO DO ARRAY DE PEÇAS (TRATA MÚLTIPLAS RAMS E FILTRA CATEGORIAS)
-    
-    // Converte o objeto selectedParts em um array de entradas [tipo, valor]
-    const entries = Object.entries(selectedParts);
-
-    // Filtra apenas as categorias que realmente possuem uma peça selecionada
-    const pecasSelecionadasValidas = entries.filter(([type, entry]) => {
-        // Se for RAM, a peça está em entry.peca
-        if (type === 'Memória RAM') {
-            return entry?.peca !== null;
+    const handleSaveConfig = async () => {
+        if (!selectedParts['Processador'] || !selectedParts['Placa Mãe']) {
+            alert('Você deve selecionar pelo menos um Processador e uma Placa Mãe para salvar.');
+            return;
         }
-        // Para todas as outras, a peça é o próprio entry (não nulo)
-        return entry !== null && entry.modelo;
-    });
 
+        const psu = selectedParts['Fonte'];
 
-    // 2. VALIDAÇÃO CORRETA: Verifica se 6 CATEGORIAS têm peças.
-    const categoriesSelected = pecasSelecionadasValidas.length;
-
-    if (categoriesSelected < 6) { 
-        alert("Selecione todas as 6 categorias de peças para salvar.");
-        console.log('Peças selecionadas (para validação):', pecasSelecionadasValidas);
-        return;
-    }
-
-    // 3. Prepara a array final (pecasToSave) para o Backend (incluindo RAM multiplicada)
-    const pecasToSave = pecasSelecionadasValidas.flatMap(([type, entry]) => {
-        
-        if (type === 'Memória RAM') {
-            // Retorna a peça (entry.peca) multiplicada pela quantidade
-            return Array(entry.quantidade).fill(entry.peca);
+        if (!psu) {
+            alert('Você precisa selecionar uma Fonte de alimentação para salvar a configuração.');
+            return;
         }
-        
-        // Outras peças são enviadas 1x
-        return [entry]; 
-    });
 
-    // AQUI O CÓDIGO CONTINUA COM O PAYLOAD E O FETCH
-    const payload = {
-        potencia_necessaria: totalConsumption,
-        preco_estimado: totalPrice,
-        usuario_id: usuarioLogado.id_usuario,
-        pecas: pecasToSave // Este array contém objetos completos das peças, o que é aceito no backend
-    };
-    
-    // Linha de log corrigida para mostrar as peças que VÃO ser salvas
-    console.log('Peças a serem salvas (incluindo múltiplas RAMs):', pecasToSave);
+        const consumoNecessario = parseFloat(totalConsumption);
+        const capacidadeDaFonte = parseFloat(psuCapacity);
+
+        if (capacidadeDaFonte < consumoNecessario) {
+            alert(
+                `erro \n` +
+                `Selecione uma Fonte mais potente antes de salvar.`
+            );
+            return;
+        }
 
 
-    try {
-        const response = await fetch(`https://my-pc-maker-cq8f.vercel.app/api/computador`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
+        const dataToSave = {
+            usuario_id: usuarioLogado.id_usuario,
+            potencia_necessaria: consumoNecessario,
+            preco_estimado: parseFloat(totalPrice),
+            pecas: []
+        };
+
+
+
+        Object.entries(selectedParts).forEach(([tipo, peca]) => {
+            if (tipo === 'Memória RAM' && peca.peca) {
+                for (let i = 0; i < peca.quantidade; i++) {
+                    dataToSave.pecas.push({
+                        id_peca: peca.peca.id_peca,
+                        tipo: tipo
+                    });
+                }
+            } else if (peca && tipo !== 'Memória RAM') {
+                dataToSave.pecas.push({
+                    id_peca: peca.id_peca,
+                    tipo: tipo
+                });
+            }
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Erro desconhecido do servidor.');
+        try {
+            const response = await fetch('https://my-pc-maker-cq8f.vercel.app/api/computador', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSave),
+            });
+
+            if (response.ok) {
+                alert('Configuração salva com sucesso!');
+            } else {
+                const errorData = await response.json();
+                alert('Erro ao salvar configuração: ' + (errorData.error || 'Erro desconhecido.'));
+            }
+        } catch (error) {
+            console.error('Erro de rede ao salvar:', error);
+            alert('Erro de conexão ao salvar a configuração.');
         }
+    };
 
-        alert("Configuração salva com sucesso!");
-
-    } catch (error) {
-        console.error("Falha ao salvar a configuração:", error);
-        alert(`Falha ao salvar a configuração: ${error.message}`);
-    }
-};
     return (
         <>
             <Navbar />
@@ -281,7 +264,6 @@ function Montagem() {
                                 let quantity = 1;
                                 let isRam = type === 'Memória RAM';
 
-                                // Determina o nome e a quantidade da peça (se for RAM)
                                 if (isRam && partEntry?.peca) {
                                     partName = partEntry.peca.modelo;
                                     quantity = partEntry.quantidade;
@@ -293,7 +275,6 @@ function Montagem() {
                                     <p className='text-listen' key={type}>
                                         <strong>{type}:</strong> {partName}
 
-                                        {/* Botões de Aumentar/Diminuir para RAM */}
                                         {isRam && partEntry?.peca && (
                                             <span className=''>
                                                 ({quantity}x)
@@ -311,12 +292,48 @@ function Montagem() {
 
 
                     <div className="current-consumption-card">
-                        <h3 className="consumption-title">CONSUMO ATUAL</h3>
-                        <p>{totalConsumption}W</p>
+                        <h3 className="consumption-title">CONSUMO</h3>
+                        <div className="consumption-header">
+                            <h4>PEÇAS</h4>
+                            <h4>/</h4>
+                            <h4>CAPACIDADE</h4>
+                        </div>
+                        <p>
+                            {totalConsumption}W
+                            {selectedParts['Fonte'] && psuCapacity > 0 ? (
+                                (() => {
+                                    const consumo = parseFloat(totalConsumption);
+
+                                    const capacidade = parseFloat(psuCapacity).toFixed(1);
+
+                                    const folga = (parseFloat(psuCapacity) - consumo);
+
+                                    const corFolga = folga < 0 ? 'red' : 'green';
+
+                                    let textoStatus = '';
+                                    let valorExibido = Math.abs(folga).toFixed(1);
+
+                                    if (folga < 0) {
+                                        textoStatus = 'falta';
+                                    } else {
+                                        textoStatus = 'sobrando';
+                                    }
+
+                                    return (
+                                        <>
+                                            {` / ${capacidade}W `}
+                                            <span style={{ color: corFolga, fontWeight: 'bold' }}>
+                                                {`(${valorExibido}W ${textoStatus})`}
+                                            </span>
+                                        </>
+                                    );
+                                })()
+                            ) : ''}
+                        </p>
                     </div>
 
                     <div className="save-button">
-                     <button className="button-save" onClick={handleSaveConfig}>Salvar</button>
+                        <button className="button-save" onClick={handleSaveConfig}>Salvar</button>
                     </div>
                 </aside>
             </main>
