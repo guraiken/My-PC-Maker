@@ -254,9 +254,9 @@ router.get('/computador/usuario/:id', async (req, res) => {
     }
 });
 
-router.get('/computador/:id', async (req, res) => {
+router.get('/usuario/builds/:id', async (req, res) => {
     const {id} = req.params;
-    
+
     try {
         const [rows] = await pool.query('SELECT count(id_computador) AS numero_builds FROM computador JOIN usuario ON usuario_id = usuario.id_usuario WHERE usuario_id = ?', [id]);
         res.status(200).json(rows[0]);
