@@ -15,6 +15,7 @@ function Perfil() {
     const [nomeInput, setNomeInput] = useState(usuarioLogado.nome)
     const [emailInput, setEmailInput] = useState(usuarioLogado.email)
     const [senhaInput, setSenhaInput] = useState()
+    const [numeroBuilds, setNumeroBuilds] = useState()
     const [bioInput, setBioInput] = useState(usuarioLogado.bio ? usuarioLogado.bio : 'Escreva algo sobre você...')
     const [imagemLinkInput, setImagemLinkInput] = useState(usuarioLogado.imagem_link ? usuarioLogado.imagem_link : '')
 
@@ -126,6 +127,22 @@ function Perfil() {
     }
   };
 
+  async function buscarNumeroDeBuilds(id) {
+    try {
+        const response = await axios.get(`https://my-pc-maker-cq8f.vercel.app/usuario/computador/${usuarioLogado.id}`);
+        console.log(`Número de Builds do Usuário ${id}: ${numeroBuilds}`);
+
+        setNumeroBuilds(response.data.numero_builds)
+    } catch (error) {
+        if (error.response) {
+            console.error(`Erro ao buscar builds: ${error.response.data.error || 'Erro desconhecido'}`);
+        } else {
+            console.error('Erro de rede ou na requisição:', error.message);
+        }
+    }
+}
+
+
   
   return (
     <section className="perfil-container">
@@ -197,7 +214,7 @@ function Perfil() {
                 </div>
                 <div className="build-stats">
                   <h2>Builds</h2>
-                  <span>0</span>
+                  <span>{numeroBuilds ? numeroBuilds : 0}</span>
                 </div>
               </div>
             </div>

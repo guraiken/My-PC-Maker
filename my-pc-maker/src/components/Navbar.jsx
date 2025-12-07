@@ -7,6 +7,7 @@ function Navbar() {
   return (
     <header className="navbar">
     <div className="logo">
+        <img src="./svgs/logo-mpcm-flat.svg" alt="" width={"30%"}/>
         <span>My PC Maker</span>
     </div>
     <nav className="nav-links">
