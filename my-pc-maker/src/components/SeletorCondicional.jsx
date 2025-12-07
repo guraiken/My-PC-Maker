@@ -102,7 +102,9 @@ function SeletorCondicional() {
         <div className="seletor-container">
 
             <div className="seletor-bar">
+                <div className='seletor-div'>
                 <p>Minhas Montagens Salvas</p>
+                </div>
             </div>
 
             <div className="seletor-content">

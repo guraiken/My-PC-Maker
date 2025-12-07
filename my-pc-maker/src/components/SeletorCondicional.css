@@ -39,6 +39,17 @@
     z-index: 10;
 }
 
+.seletor-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cor-destaque);
+    height: 85%;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .seletor-content {
     /* MUDANÇA: Configuração para alinhar cartões lado a lado e permitir quebra */
     display: flex;
