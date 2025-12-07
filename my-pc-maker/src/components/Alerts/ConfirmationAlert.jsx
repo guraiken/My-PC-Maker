@@ -1,10 +1,10 @@
 import Swal from 'sweetalert2'
 
-function ConfirmationAlert({titulo, texto}) {
+function ConfirmationAlert({titulo, texto, tempo, posicao, toaster}) {
 
     if(texto){
         Swal.fire({
-        position: "center",
+        position: posicao ? posicao : "center",
         icon: "success",
         title: titulo,
         text: texto,
@@ -12,30 +12,32 @@ function ConfirmationAlert({titulo, texto}) {
         background: "var(--fundo)",
         color: "var(--texto-principal)", 
         iconColor: "var(--destaque)",
-        timer: 1200, 
+        timer: tempo ? tempo : 1200, 
         customClass: {
             timerProgressBar: 'progressBar'
         },
         timerProgressBar: true,
-        width: "30%",
+        width: "40%",
         heightAuto: "20%",
+        toast: toaster ? toaster : false
         });
     }else{
         Swal.fire({
-        position: "center",
+        position: posicao ? posicao : "center",
         icon: "success",
         title: titulo,
         showConfirmButton: false,
         background: "var(--fundo)",
         color: "var(--texto-principal)", 
         iconColor: "var(--destaque)",
-        timer: 1200, 
+        timer: tempo ? tempo : 1200,
         customClass: {
             timerProgressBar: 'progressBar'
         },
         timerProgressBar: true,
-        width: "30%",
+        width: "40%",
         heightAuto: "20%",
+        toast: toaster ? toaster : false
         });
     }
 }

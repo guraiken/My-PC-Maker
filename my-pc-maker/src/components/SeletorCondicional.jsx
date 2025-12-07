@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../contexts/globalContext'; // Importe seu contexto
 import Swal from 'sweetalert2';
 import "./SeletorCondicional.css"; // Seus estilos aprimorados
+import ConfirmationAlert from './Alerts/ConfirmationAlert';
 
 function SeletorCondicional() {
     // Acesso ao contexto para obter o usuário logado
@@ -36,7 +37,7 @@ function SeletorCondicional() {
                             'Content-Type': 'application/json',
                         },
                     });
-
+                    ConfirmationAlert({titulo:"Sucesso", texto:"Configuração deletada com sucesso!", tempo: 1500, posicao: "top", toaster: true});
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.error || 'Falha ao deletar a configuração.');
@@ -111,7 +112,7 @@ function SeletorCondicional() {
 
 
                 {!loading && !error && configuracoes.length === 0 && (
-                    <p>Você não tem nenhuma configuração salva. Vá para a tela de montagem para criar uma!</p>
+                    <h3>Você não tem nenhuma configuração salva. Vá para a tela de montagem para criar uma!</h3>
                 )}
 
                 {!loading && !error && configuracoes.map((config, index) => (
@@ -120,7 +121,8 @@ function SeletorCondicional() {
                             <h4>Montagem  {index + 1}</h4>
                             <button
                                 onClick={() => deletarConfiguracao(config.id_computador, index)}
-                                className="button-excluir-config"
+                                className="button-excluir"
+                                style={{width: '35%'}}
                                 title="Excluir Montagem"
                             >
                                 Excluir

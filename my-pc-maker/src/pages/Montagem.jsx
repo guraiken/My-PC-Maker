@@ -3,6 +3,8 @@ import './Montagem.css';
 import Navbar from '../components/Navbar';
 import { span } from 'framer-motion/client';
 import { GlobalContext } from '../contexts/globalContext';
+import ErrorAlert from '../components/Alerts/ErrorAlert';
+import ConfirmationAlert from '../components/Alerts/ConfirmationAlert';
 
 const ProductCard = ({ name, partType, onSelect, pecaData }) => (
     <div className="product-card" onClick={() => onSelect(partType, pecaData)}>
@@ -122,14 +124,14 @@ function Montagem() {
 
     const handleSaveConfig = async () => {
         if (!selectedParts['Processador'] || !selectedParts['Placa Mãe']) {
-            alert('Você deve selecionar pelo menos um Processador e uma Placa Mãe para salvar.');
+            ErrorAlert({titulo:"Erro", texto:"Você deve selecionar um Processador e uma Placa Mãe antes de salvar.", tempo: 1500});
             return;
         }
 
         const psu = selectedParts['Fonte'];
 
         if (!psu) {
-            alert('Você precisa selecionar uma Fonte de alimentação para salvar a configuração.');
+            ErrorAlert({titulo:"Erro", texto:"Você deve selecionar uma Fonte antes de salvar.", tempo: 1500});
             return;
         }
 
@@ -137,10 +139,7 @@ function Montagem() {
         const capacidadeDaFonte = parseFloat(psuCapacity);
 
         if (capacidadeDaFonte < consumoNecessario) {
-            alert(
-                `erro \n` +
-                `Selecione uma Fonte mais potente antes de salvar.`
-            );
+            ErrorAlert({titulo:"Erro", texto:"Selecione uma fonte mais potente antes de salvar!", tempo: 1500});
             return;
         }
 
@@ -180,14 +179,14 @@ function Montagem() {
             });
 
             if (response.ok) {
-                alert('Configuração salva com sucesso!');
+                ConfirmationAlert({titulo:"Sucesso", texto:"Configuração salva com sucesso!", tempo: 1500});
             } else {
                 const errorData = await response.json();
-                alert('Erro ao salvar configuração: ' + (errorData.error || 'Erro desconhecido.'));
+                ErrorAlert({titulo: "Erro", texto: `Erro ao salvar configuração` + (errorData.error ? `: ${errorData.error}` : '.'), tempo: 2000});
             }
         } catch (error) {
             console.error('Erro de rede ao salvar:', error);
-            alert('Erro de conexão ao salvar a configuração.');
+            ErrorAlert({titulo: "Erro", texto: "Erro de conexão ao salvar a configuração.", tempo: 2000});
         }
     };
 

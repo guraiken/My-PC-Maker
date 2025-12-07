@@ -280,7 +280,15 @@
     font-size: clamp(0.5rem, 1.5vw, 1.5rem);
     font-family: "k2d";
     font-weight: bold;
+    will-change: transform;
 }
+
+.button-salvar:active, .button-cancelar:active, .button-excluir:active, button:active {
+    transition: ease transform 0.1s;
+    transform: scale(0.95);
+}
+
+
 .button-salvar {
     background-color: var(--destaque);
 }
