@@ -9,6 +9,7 @@ import axios from "axios"
 import ConfirmationAlert from "../components/Alerts/ConfirmationAlert"
 import Swal from 'sweetalert2'
 import { div, img, p } from "framer-motion/client"
+import { clamp } from "framer-motion"
 
 function Perfil() {
   const {usuarioLogado, setUsuarioLogado, isOpen, setIsOpen, usuarios, setUsuarios} = useContext(GlobalContext)
@@ -224,7 +225,7 @@ useEffect(()=> {
                 </div>
                 <div className="build-stats">
                   <h2>Builds</h2>
-                  <span>{numeroBuilds ? numeroBuilds : 0}</span>
+                  <span style={{fontWeight: "bolder", fontSize: "clamp(0.8rem, 2vw, 1.8rem)"}}>{numeroBuilds ? numeroBuilds : 0}</span>
                 </div>
               </div>
             </div>

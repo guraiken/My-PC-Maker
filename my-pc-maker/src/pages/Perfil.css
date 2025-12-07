@@ -136,10 +136,10 @@
                 height: 100%;
                 padding: 10px;
             }
-                .build-stats p {
+                .build-stats span {
                     margin: 0;
                     padding: 0;
-                    font-size: clamp(0.8rem, 1.5vw, 1rem);
+                    font-size: clamp(0.8rem, 2vw, 1.8rem);
                 }
                 .build-stats h2 {
                     margin: 0;
