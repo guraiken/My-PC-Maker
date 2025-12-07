@@ -6,10 +6,11 @@ import { GlobalContext } from '../contexts/globalContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import ConfirmationAlert from '../components/Alerts/ConfirmationAlert';
 
-const ProductCard = ({ name, partType, onSelect, pecaData }) => (
+const ProductCard = ({ name, partType, onSelect, pecaData, image, namePlaceholder }) => (
     <div className="product-card" onClick={() => onSelect(partType, pecaData)}>
-        <div className="product-image">
-            {name}
+        <div className="product-image" style={{overflow: 'hidden'}}>
+            {image != null && <img src={image} alt="" style={{width: "168px", height: "168px"}}/>} 
+            {namePlaceholder && image == null && <span>{namePlaceholder}</span>}
         </div>
         <div className="product-name">{name}</div>
     </div>
@@ -218,7 +219,9 @@ function Montagem() {
                             return (
                                 <ProductCard
                                     key={peca.id_peca}
+                                    image={peca.link_imagem}
                                     name={peca.modelo}
+                                    namePlaceholder={peca.modelo}
                                     partType={activePart}
                                     pecaData={peca}
                                     onSelect={handlePartSelection}
