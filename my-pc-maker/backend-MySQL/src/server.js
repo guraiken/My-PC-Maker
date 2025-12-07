@@ -7,14 +7,14 @@ const app = express();
 const router = express.Router();
 
 const pool = mysql.createPool({
-    host:"localhost",
-    user:"root",      // Altere para o nome do seu user no MySQL
-    password: "12345",    // Altere para a senha correta
-    database: "mpcm",
+    host: process.env.HOST,
+    user: process.env.USER,      // Altere para o nome do seu user no MySQL
+    password: process.env.PASSWORD,    // Altere para a senha correta
+    database: process.env.DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    port: 3306
+    port: process.env.PORT
 });
 
 app.use(cors());

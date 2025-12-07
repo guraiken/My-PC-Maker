@@ -89,7 +89,7 @@ INSERT INTO peca(tipo, modelo, preco, watts_consumidos) VALUES
 ('Armazenamento', 'teste53', 100, 20),
 ('Armazenamento', 'teste54', 100, 20),
 
-('Fonte', 'teste61', 100, 20),
+('Fonte', 'teste61', 100, 200),
 ('Fonte', 'teste62', 100, 20),
 ('Fonte', 'teste63', 100, 20),
 ('Fonte', 'teste64', 100, 20)
