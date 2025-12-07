@@ -1,14 +1,14 @@
 import "./SidePanel.css"
-import { motion, transform } from "framer-motion"
+import { motion, scale, transform } from "framer-motion"
 
 function SidePanel({titulo, texto, panelDirection}) {
     
   return (
       <motion.div className="panel-left"
-        initial={{opacity: 1, x: panelDirection === "left" ? "75vw" : "-75vw", filter: "blur(1.5px)"}}
+        initial={{opacity: 0.5, x: panelDirection === "left" ? "100vw" : "-100vw", filter: "blur(1.5px)"}}
         animate={{opacity: 1, x: 0, filter: "blur(0px)"}}
         transition={{
-            type: "spring", stiffness: 120, damping: 20, ease: "easeInOut", duration: 2
+            type: "spring", stiffness: 80, damping: 14
         }}
       >
           <div className="panel-left-center">

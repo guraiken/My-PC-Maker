@@ -309,7 +309,7 @@
 
 .button-excluir:hover {
     transition: ease all 0.3s;
-    background-color: #d33;
+    background-color: var(--erro);
     color: white;
 }
 

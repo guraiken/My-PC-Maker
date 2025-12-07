@@ -8,6 +8,7 @@
         align-items: center;
         filter: drop-shadow(4px 3px 10px rgba(0, 0, 0, 0.562));
         z-index: 1000;
+        will-change: transform, filter;
     }
         .panel-left-center {
             display: flex;

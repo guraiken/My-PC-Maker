@@ -278,10 +278,10 @@ function Montagem() {
                                         <strong>{type}:</strong> {partName}
 
                                         {isRam && partEntry?.peca && (
-                                            <span className=''>
+                                            <span className='' style={{ marginLeft: '5px' }}>
                                                 ({quantity}x)
-                                                <button onClick={() => handleRamQuantityChange(-1)} disabled={quantity <= 1} style={{ marginRight: '5px' }}>-</button>
-                                                <button onClick={() => handleRamQuantityChange(1)} disabled={quantity >= 8}>+</button>
+                                                <button onClick={() => handleRamQuantityChange(-1)} disabled={quantity <= 1} style={{ marginLeft: '5px', borderRadius:"50%", width:"24px", height:"24px", backgroundColor:"var(--destaque)", borderStyle:"none", color: "var(--texto-principal)"}}>-</button>
+                                                <button onClick={() => handleRamQuantityChange(1)} disabled={quantity >= 8} style={{ marginLeft: '5px', borderRadius:"50%", width:"24px", height:"24px", backgroundColor:"var(--destaque)", borderStyle:"none", color: "var(--texto-principal)"}}>+</button>
                                             </span>
                                         )}
                                     </p>
@@ -310,7 +310,7 @@ function Montagem() {
 
                                     const folga = (parseFloat(psuCapacity) - consumo);
 
-                                    const corFolga = folga < 0 ? 'red' : 'green';
+                                    const corFolga = folga < 0 ? 'var(--erro)' : 'var(--destaque)';
 
                                     let textoStatus = '';
                                     let valorExibido = Math.abs(folga).toFixed(1);
