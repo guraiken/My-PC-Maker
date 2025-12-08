@@ -152,10 +152,8 @@ function Montagem() {
     }, [activePart]);
 
     const handleSaveConfig = async () => {
-        const numSelectedParts = selectedParts.length
-        console.log(numSelectedParts)
-        if (numSelectedParts !== 6) {
-            ErrorAlert({titulo:"Erro", texto:"Você deve selecionar as outras peças.", tempo: 1500});
+        if (!selectedParts['Processador'] || !selectedParts['Placa Mãe']) {
+            ErrorAlert({titulo:"Erro", texto:"Você deve selecionar um Processador e uma Placa Mãe antes de salvar.", tempo: 1500});
             return;
         }
 
