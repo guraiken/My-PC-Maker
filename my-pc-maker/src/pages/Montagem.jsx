@@ -7,16 +7,12 @@ import ConfirmationAlert from '../components/Alerts/ConfirmationAlert';
 import { IoIosRemoveCircle } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
-// --- COMPONENTE DO MEDIDOR (GAUGE) (mantido) ---
 const ConsumptionGauge = ({ value, max }) => {
-    // ... (Seu código ConsumptionGauge aqui)
     const maxValue = max > 0 ? max : 1000;
     const percentage = Math.min(Math.max(value / maxValue, 0), 1);
     
-    // Rotação: -90 (vazio) a 90 (cheio)
     const rotation = -90 + (percentage * 180);
 
-    // --- CONFIGURAÇÃO DE CORES DA SUA PALETA ---
     const colors = {
         background: "var(--fundo)",  
         safe: "#00e676",      
@@ -25,7 +21,6 @@ const ConsumptionGauge = ({ value, max }) => {
         needle: "var(--destaque)" // Usando o destaque para a agulha
     };
 
-    // Lógica para decidir a cor atual baseada na porcentagem
     let currentColor = colors.safe;
     if (value > maxValue) currentColor = colors.danger;
     else if (percentage > 0.85) currentColor = colors.warning;
@@ -42,7 +37,6 @@ const ConsumptionGauge = ({ value, max }) => {
                     strokeLinecap="round"
                 />
                 
-                {/* 2. Arco de Progresso (Colorido) */}
                 <path 
                     d="M 20 100 A 80 80 0 0 1 180 100" 
                     fill="none" 
@@ -53,11 +47,8 @@ const ConsumptionGauge = ({ value, max }) => {
                     className="gauge-progress"
                 />
 
-                {/* 3. AGULHA (Ponteiro) */}
                 <g transform={`translate(100, 100) rotate(${rotation})`}>
-                    {/* Haste da agulha */}
                     <path d="M -4 0 L 0 -75 L 4 0 Z" fill={colors.needle} />
-                    {/* Círculo central (pivô) */}
                     <circle cx="0" cy="0" r="6" fill={colors.needle} />
                 </g>
 
@@ -65,7 +56,6 @@ const ConsumptionGauge = ({ value, max }) => {
         </div>
     );
 };
-// --- COMPONENTE PRODUCT CARD (mantido) ---
 const ProductCard = ({ name, partType, onSelect, pecaData, image, namePlaceholder }) => (
     <div className="product-card" onClick={() => onSelect(partType, pecaData)}>
         <div className="product-image" style={{overflow: 'hidden'}}>
@@ -82,7 +72,7 @@ function Montagem() {
     const [activePart, setActivePart] = useState('Processador');
     const { usuarioLogado } = useContext(GlobalContext);
     const navegar = useNavigate()
-
+    const [searchTerm, setSearchTerm] = useState('')
     const [availableParts, setAvailableParts] = useState([]);
 
     const [selectedParts, setSelectedParts] = useState({
@@ -224,6 +214,18 @@ function Montagem() {
         }
     };
 
+    const filteredParts = useMemo(() => {
+        if (!searchTerm) {
+            return availableParts;
+        }
+
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+        return availableParts.filter(peca =>
+            peca.modelo.toLowerCase().includes(lowerCaseSearchTerm)
+        );
+    }, [availableParts, searchTerm]);
+
     return (
         <>
             <Navbar />
@@ -243,12 +245,17 @@ function Montagem() {
                         ))}
 
                         <div className="search-bar">
-                            <input type="text" placeholder="Buscar..." />
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                value={searchTerm} 
+                                onChange={(e) => setSearchTerm(e.target.value)} 
+                            />
                         </div>
                     </div>
 
                     <div className="product-grid">
-                        {availableParts.map((peca) => {
+                        {filteredParts.map((peca) => {
                             return (
                                 <ProductCard
                                     key={peca.id_peca}
@@ -261,10 +268,12 @@ function Montagem() {
                                 />
                             )
                         })}
-
                     </div>
                     {availableParts.length === 0 && (
                         <p>Carregando peças ou nenhuma peça encontrada para {activePart}.</p>
+                    )}
+                    {availableParts.length > 0 && filteredParts.length === 0 && (
+                        <p>Nenhuma peça encontrada para "{searchTerm}".</p>
                     )}
                 </div>
 
