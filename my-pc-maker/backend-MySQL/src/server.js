@@ -121,6 +121,10 @@ app.put('/usuario/:id', async (req, res) => {
 app.delete('/usuario/:id', async (req, res) => {
     const { id } = req.params;
     try {
+        const [result2] = await pool.query('DELETE FROM computador WHERE usuario_id = ?', [id])
+        if(result2.affectedRows === 0) {
+            return res.status(404).json({ error: 'Montagem não encontrado' });
+        }
         const [result] = await pool.query('DELETE FROM usuario WHERE id_usuario = ?', [id]);
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Usuario não encontrado' });

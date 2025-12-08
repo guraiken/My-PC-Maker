@@ -111,12 +111,11 @@ function Perfil() {
         confirmButtonColor: "#d33",
         cancelButtonColor: "var(--separacao)",
         confirmButtonText: "Sim, delete a conta!"
-      }).then((result) => {
+      }).then(async(result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: "DELETADA!",
-            text: "Sua conta foi deletada com sucesso.",
-            icon: "success"
+          ConfirmationAlert({
+            titulo: "DELETADA!",
+            texto: "Sua conta foi deletada com sucesso.",
           });
           axios.delete(`https://my-pc-maker-cq8f.vercel.app/usuario/${usuarioLogado.id_usuario}`);
           setUsuarioLogado(null)
