@@ -152,7 +152,7 @@ function Montagem() {
     }, [activePart]);
 
     const handleSaveConfig = async () => {
-        if (!selectedParts['Processador'] && !selectedParts['Placa Mãe' ] && !selectedParts['Placa de Vídeo' ]  && !selectedParts['Memória Ram' ] && !selectedParts['Armazenamento' ]) {
+        if (!selectedParts['Processador'] || !selectedParts['Placa Mãe' ] || !selectedParts['Placa de Vídeo' ]  || !selectedParts['Memória Ram' ] || !selectedParts['Armazenamento' ]) {
             ErrorAlert({titulo:"Erro", texto:"Você deve selecionar todas as peças.", tempo: 1500});
             return;
         }
