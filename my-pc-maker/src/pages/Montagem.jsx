@@ -5,6 +5,7 @@ import { GlobalContext } from '../contexts/globalContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import ConfirmationAlert from '../components/Alerts/ConfirmationAlert';
 import { IoIosRemoveCircle } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 // --- COMPONENTE DO MEDIDOR (GAUGE) (mantido) ---
 const ConsumptionGauge = ({ value, max }) => {
@@ -80,20 +81,19 @@ function Montagem() {
     const partTypes = ['Processador', 'Placa Mãe', 'Placa de Vídeo', 'Memória RAM', 'Armazenamento', 'Fonte'];
     const [activePart, setActivePart] = useState('Processador');
     const { usuarioLogado } = useContext(GlobalContext);
+    const navegar = useNavigate()
 
     const [availableParts, setAvailableParts] = useState([]);
 
-    // 🚩 1. ESTADO INICIAL SIMPLIFICADO: RAM não tem mais objeto com 'peca'/'quantidade'
     const [selectedParts, setSelectedParts] = useState({
         'Processador': null,
         'Placa Mãe': null,
         'Placa de Vídeo': null,
-        'Memória RAM': null, // Agora é tratada como qualquer outra peça única
+        'Memória RAM': null, 
         'Armazenamento': null,
         'Fonte': null
     });
-    
-    // 🚩 FUNÇÃO DE SELEÇÃO: JÁ ESTÁ SIMPLIFICADA (manter)
+
     const handlePartSelection = (type, part) => {
         setSelectedParts(prevParts => ({
             ...prevParts,
@@ -101,15 +101,12 @@ function Montagem() {
         }));
     };
 
-    // 🚩 FUNÇÃO DE REMOÇÃO: JÁ ESTÁ SIMPLIFICADA (manter)
     const handleRemovePart = (partType) => {
         setSelectedParts(prevParts => ({
             ...prevParts,
             [partType]: null 
         }));
     };
-
-    // 🚩 2. USEMEMO SIMPLIFICADO: Remove a lógica de quantidade da RAM
     const { totalConsumption, totalPrice, psuCapacity } = useMemo(() => {
         const partsArray = Object.entries(selectedParts);
 
@@ -120,11 +117,9 @@ function Montagem() {
         partsArray.forEach(([partType, part]) => {
             if (!part) return;
             
-            // Item e Quantity são simples agora
-            let item = part; 
-            let quantity = 1; // A quantidade é sempre 1
 
-            // Não precisa de verificação `if (!item) return;` pois 'part' já é checado
+            let item = part; 
+            let quantity = 1; 
 
             totalPrice += (parseFloat(item.preco) || 0);
 
@@ -166,8 +161,6 @@ function Montagem() {
         fetchParts();
     }, [activePart]);
 
-
-    // 🚩 4. LÓGICA DE SALVAR SIMPLIFICADA: Remove a lógica de múltiplos itens para RAM
     const handleSaveConfig = async () => {
         if (!selectedParts['Processador'] || !selectedParts['Placa Mãe']) {
             ErrorAlert({titulo:"Erro", texto:"Você deve selecionar um Processador e uma Placa Mãe antes de salvar.", tempo: 1500});
@@ -220,6 +213,7 @@ function Montagem() {
 
             if (response.ok) {
                 ConfirmationAlert({titulo:"Sucesso", texto:"Configuração salva com sucesso!", tempo: 1500});
+                navegar("/perfil")
             } else {
                 const errorData = await response.json();
                 ErrorAlert({titulo: "Erro", texto: `Erro ao salvar configuração` + (errorData.error ? `: ${errorData.error}` : '.'), tempo: 2000});
@@ -278,13 +272,11 @@ function Montagem() {
 
                     <div className="selected-part-card">
                         <h3 className="part-title">
-                            {/* 🚩 5. SIDEBAR SIMPLIFICADA: Remove a condicional de RAM */}
                             {selectedParts[activePart] ? selectedParts[activePart].modelo : 'Nenhuma peça selecionada'}
                         </h3>
                         <div className="part-details">
                             {selectedParts[activePart] ?
                                 <div>
-                                    {/* 🚩 5. SIDEBAR SIMPLIFICADA: Remove a condicional de RAM */}
                                     <p>PREÇO ESTIMADO: R$ {selectedParts[activePart].preco}</p>
                                     <p>CONSUMO: {selectedParts[activePart].watts_consumidos}W</p>
                                 </div>
@@ -299,13 +291,11 @@ function Montagem() {
                         <ul>
                             {partTypes.map(type => {
                                 const partEntry = selectedParts[type];
-                                const isSelected = !!partEntry; // Verifica se há uma peça (objeto)
+                                const isSelected = !!partEntry;
 
-                                // O nome da peça é sempre o modelo se estiver selecionado
                                 let partName = isSelected ? partEntry.modelo : 'Não selecionado';
 
                                 return (
-                                    // Adicionando justify-content: space-between para alinhar texto e botão
                                     <p className='text-listen' key={type} style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                                         
                                         <span>
@@ -314,7 +304,7 @@ function Montagem() {
                                         {isSelected && (
                                             <span 
                                                 onClick={() => handleRemovePart(type)} 
-                                                className="remove-part-button" // Usando uma classe para estilizar
+                                                className="remove-part-button" 
                                                 title={`Remover ${type}`}
                                             >
                                                 <IoIosRemoveCircle />
