@@ -353,3 +353,96 @@ body {
 }
 
 /* Estilos específicos para a barra divisória */
+
+.gauge-container {
+    width: 100%;
+    max-width: 250px; /* Tamanho máximo do medidor */
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+/* Container do Medidor (Gauge) */
+.gauge-container {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+    /* Ajuste de espaçamento após remover texto interno */
+    margin-bottom: -15px; 
+}
+
+/* Novo Bloco de Resumo de Consumo */
+.consumption-summary {
+    width: 100%;
+    padding-top: 5px; /* Pequeno respiro após o gauge */
+}
+
+.main-consumption-text {
+    /* Garante que o texto de consumo/capacidade não seja afetado pelo CSS antigo */
+    margin: 0 0 5px 0 !important;
+    font-size: 1.2rem;
+    color: var(--sub-texto);
+    font-weight: 500;
+}
+
+.gauge-container {
+    width: 100%;
+    max-width: 250px; /* Tamanho máximo do medidor */
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: -15px; /* Ajuste para trazer o texto de baixo para perto do arco */
+}
+
+/* O SVG em si */
+.gauge-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+/* --- REGRAS ESSENCIAIS PARA ANIMAÇÃO --- */
+
+/* Animação suave para a barra de progresso */
+.gauge-progress {
+    /* Transição no preenchimento (stroke-dasharray) e na cor (stroke) */
+    transition: stroke-dasharray 0.5s ease-out, stroke 0.3s ease;
+}
+
+/* Animação suave para a agulha (o elemento <g> que tem o transform) */
+.gauge-svg g {
+    /* Transição no movimento de rotação (transform) */
+    transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Estilo para a lista de peças */
+.current-piece-chosen .text-listen {
+    text-align: left;
+    margin: 5px 0;
+    padding: 5px 0;
+    display: flex; /* Garante que o texto e o botão fiquem na mesma linha */
+    justify-content: space-between; /* Empurra o botão para a direita */
+    align-items: center;
+}
+
+/* Estilo para o botão de remoção (o X) */
+.remove-part-button {
+    /* Base para o ícone */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    line-height: 1; /* Alinhamento vertical do ícone */
+    flex-shrink: 0; /* Impede que o botão encolha */
+    
+    /* Estilização do ícone IoIosRemoveCircle */
+    color: var(--texto-principal); 
+    font-size: 24px; 
+    transition: color 0.2s, opacity 0.2s;
+}
+
+.remove-part-button:hover {
+    color: var(--erro); 
+}

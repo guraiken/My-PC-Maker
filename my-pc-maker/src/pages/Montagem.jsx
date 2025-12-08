@@ -1,11 +1,70 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
 import './Montagem.css';
 import Navbar from '../components/Navbar';
-import { span } from 'framer-motion/client';
 import { GlobalContext } from '../contexts/globalContext';
 import ErrorAlert from '../components/Alerts/ErrorAlert';
 import ConfirmationAlert from '../components/Alerts/ConfirmationAlert';
+import { IoIosRemoveCircle } from 'react-icons/io';
 
+// --- COMPONENTE DO MEDIDOR (GAUGE) (mantido) ---
+const ConsumptionGauge = ({ value, max }) => {
+    // ... (Seu código ConsumptionGauge aqui)
+    const maxValue = max > 0 ? max : 1000;
+    const percentage = Math.min(Math.max(value / maxValue, 0), 1);
+    
+    // Rotação: -90 (vazio) a 90 (cheio)
+    const rotation = -90 + (percentage * 180);
+
+    // --- CONFIGURAÇÃO DE CORES DA SUA PALETA ---
+    const colors = {
+        background: "var(--fundo)",  
+        safe: "#00e676",      
+        warning: "var(--destaque)", 
+        danger: "var(--erro)",   
+        needle: "var(--destaque)" // Usando o destaque para a agulha
+    };
+
+    // Lógica para decidir a cor atual baseada na porcentagem
+    let currentColor = colors.safe;
+    if (value > maxValue) currentColor = colors.danger;
+    else if (percentage > 0.85) currentColor = colors.warning;
+
+    return (
+        <div className="gauge-container">
+            <svg viewBox="0 0 200 110" className="gauge-svg">
+                {/* 1. Arco de Fundo */}
+                <path 
+                    d="M 20 100 A 80 80 0 0 1 180 100" 
+                    fill="none" 
+                    stroke={colors.background} 
+                    strokeWidth="20" 
+                    strokeLinecap="round"
+                />
+                
+                {/* 2. Arco de Progresso (Colorido) */}
+                <path 
+                    d="M 20 100 A 80 80 0 0 1 180 100" 
+                    fill="none" 
+                    stroke={currentColor} 
+                    strokeWidth="20" 
+                    strokeLinecap="round"
+                    strokeDasharray={`${percentage * 251.2} 251.2`} 
+                    className="gauge-progress"
+                />
+
+                {/* 3. AGULHA (Ponteiro) */}
+                <g transform={`translate(100, 100) rotate(${rotation})`}>
+                    {/* Haste da agulha */}
+                    <path d="M -4 0 L 0 -75 L 4 0 Z" fill={colors.needle} />
+                    {/* Círculo central (pivô) */}
+                    <circle cx="0" cy="0" r="6" fill={colors.needle} />
+                </g>
+
+            </svg>
+        </div>
+    );
+};
+// --- COMPONENTE PRODUCT CARD (mantido) ---
 const ProductCard = ({ name, partType, onSelect, pecaData, image, namePlaceholder }) => (
     <div className="product-card" onClick={() => onSelect(partType, pecaData)}>
         <div className="product-image" style={{overflow: 'hidden'}}>
@@ -24,47 +83,33 @@ function Montagem() {
 
     const [availableParts, setAvailableParts] = useState([]);
 
+    // 🚩 1. ESTADO INICIAL SIMPLIFICADO: RAM não tem mais objeto com 'peca'/'quantidade'
     const [selectedParts, setSelectedParts] = useState({
-        'Memória RAM': { peca: null, quantidade: 1 }
+        'Processador': null,
+        'Placa Mãe': null,
+        'Placa de Vídeo': null,
+        'Memória RAM': null, // Agora é tratada como qualquer outra peça única
+        'Armazenamento': null,
+        'Fonte': null
     });
-
-
-    const handlePartSelection = (partType, product) => {
-        setSelectedParts(prevParts => {
-            if (partType === 'Memória RAM') {
-                return {
-                    ...prevParts,
-                    [partType]: {
-                        peca: product,
-                        quantidade: prevParts[partType]?.quantidade || 1
-                    }
-                };
-            } else {
-                return {
-                    ...prevParts,
-                    [partType]: product
-                };
-            }
-        });
+    
+    // 🚩 FUNÇÃO DE SELEÇÃO: JÁ ESTÁ SIMPLIFICADA (manter)
+    const handlePartSelection = (type, part) => {
+        setSelectedParts(prevParts => ({
+            ...prevParts,
+            [type]: part 
+        }));
     };
 
-    const handleRamQuantityChange = (delta) => {
-        setSelectedParts(prevParts => {
-            const currentRam = prevParts['Memória RAM'];
-            if (!currentRam || !currentRam.peca) return prevParts;
-
-            const newQuantity = Math.max(1, currentRam.quantidade + delta);
-
-            return {
-                ...prevParts,
-                'Memória RAM': {
-                    ...currentRam,
-                    quantidade: newQuantity
-                }
-            };
-        });
+    // 🚩 FUNÇÃO DE REMOÇÃO: JÁ ESTÁ SIMPLIFICADA (manter)
+    const handleRemovePart = (partType) => {
+        setSelectedParts(prevParts => ({
+            ...prevParts,
+            [partType]: null 
+        }));
     };
 
+    // 🚩 2. USEMEMO SIMPLIFICADO: Remove a lógica de quantidade da RAM
     const { totalConsumption, totalPrice, psuCapacity } = useMemo(() => {
         const partsArray = Object.entries(selectedParts);
 
@@ -74,18 +119,19 @@ function Montagem() {
 
         partsArray.forEach(([partType, part]) => {
             if (!part) return;
+            
+            // Item e Quantity são simples agora
+            let item = part; 
+            let quantity = 1; // A quantidade é sempre 1
 
-            let item = partType === 'Memória RAM' ? part.peca : part;
-            let quantity = partType === 'Memória RAM' ? (part.quantidade || 1) : 1;
+            // Não precisa de verificação `if (!item) return;` pois 'part' já é checado
 
-            if (!item) return;
-
-            totalPrice += ((parseFloat(item.preco) || 0) * quantity);
+            totalPrice += (parseFloat(item.preco) || 0);
 
             if (partType === 'Fonte') {
                 psuWattage = parseFloat(item.watts_consumidos) || 0;
             } else {
-                consumptionWithoutPSU += ((parseFloat(item.watts_consumidos) || 0) * quantity);
+                consumptionWithoutPSU += (parseFloat(item.watts_consumidos) || 0);
             }
         });
 
@@ -121,8 +167,7 @@ function Montagem() {
     }, [activePart]);
 
 
-
-
+    // 🚩 4. LÓGICA DE SALVAR SIMPLIFICADA: Remove a lógica de múltiplos itens para RAM
     const handleSaveConfig = async () => {
         if (!selectedParts['Processador'] || !selectedParts['Placa Mãe']) {
             ErrorAlert({titulo:"Erro", texto:"Você deve selecionar um Processador e uma Placa Mãe antes de salvar.", tempo: 1500});
@@ -153,19 +198,13 @@ function Montagem() {
         };
 
 
-
+        // Simplesmente mapeia todas as peças selecionadas
         Object.entries(selectedParts).forEach(([tipo, peca]) => {
-            if (tipo === 'Memória RAM' && peca.peca) {
-                for (let i = 0; i < peca.quantidade; i++) {
-                    dataToSave.pecas.push({
-                        id_peca: peca.peca.id_peca,
-                        tipo: tipo
-                    });
-                }
-            } else if (peca && tipo !== 'Memória RAM') {
+            if (peca) {
                 dataToSave.pecas.push({
                     id_peca: peca.id_peca,
-                    tipo: tipo
+                    tipo: tipo,
+                    // Quantidade é sempre 1 aqui
                 });
             }
         });
@@ -239,16 +278,15 @@ function Montagem() {
 
                     <div className="selected-part-card">
                         <h3 className="part-title">
-                            {activePart === 'Memória RAM'
-                                ? (selectedParts[activePart]?.peca ? selectedParts[activePart].peca.modelo : 'Nenhuma peça selecionada')
-                                : (selectedParts[activePart] ? selectedParts[activePart].modelo : 'Nenhuma peça selecionada')
-                            }
+                            {/* 🚩 5. SIDEBAR SIMPLIFICADA: Remove a condicional de RAM */}
+                            {selectedParts[activePart] ? selectedParts[activePart].modelo : 'Nenhuma peça selecionada'}
                         </h3>
                         <div className="part-details">
-                            {(activePart === 'Memória RAM' ? selectedParts[activePart]?.peca : selectedParts[activePart]) ?
+                            {selectedParts[activePart] ?
                                 <div>
-                                    <p>PREÇO ESTIMADO: R$ {(activePart === 'Memória RAM' ? selectedParts[activePart].peca.preco : selectedParts[activePart].preco)}</p>
-                                    <p>CONSUMO: {(activePart === 'Memória RAM' ? selectedParts[activePart].peca.watts_consumidos : selectedParts[activePart].watts_consumidos)}W</p>
+                                    {/* 🚩 5. SIDEBAR SIMPLIFICADA: Remove a condicional de RAM */}
+                                    <p>PREÇO ESTIMADO: R$ {selectedParts[activePart].preco}</p>
+                                    <p>CONSUMO: {selectedParts[activePart].watts_consumidos}W</p>
                                 </div>
                                 :
                                 <></>
@@ -261,27 +299,25 @@ function Montagem() {
                         <ul>
                             {partTypes.map(type => {
                                 const partEntry = selectedParts[type];
+                                const isSelected = !!partEntry; // Verifica se há uma peça (objeto)
 
-                                let partName = 'Não selecionado';
-                                let quantity = 1;
-                                let isRam = type === 'Memória RAM';
-
-                                if (isRam && partEntry?.peca) {
-                                    partName = partEntry.peca.modelo;
-                                    quantity = partEntry.quantidade;
-                                } else if (!isRam && partEntry) {
-                                    partName = partEntry.modelo;
-                                }
+                                // O nome da peça é sempre o modelo se estiver selecionado
+                                let partName = isSelected ? partEntry.modelo : 'Não selecionado';
 
                                 return (
-                                    <p className='text-listen' key={type}>
-                                        <strong>{type}:</strong> {partName}
-
-                                        {isRam && partEntry?.peca && (
-                                            <span className='' style={{ marginLeft: '5px' }}>
-                                                ({quantity}x)
-                                                <button onClick={() => handleRamQuantityChange(-1)} disabled={quantity <= 1} style={{ marginLeft: '5px', borderRadius:"50%", width:"24px", height:"24px", backgroundColor:"var(--destaque)", borderStyle:"none", color: "var(--texto-principal)"}}>-</button>
-                                                <button onClick={() => handleRamQuantityChange(1)} disabled={quantity >= 8} style={{ marginLeft: '5px', borderRadius:"50%", width:"24px", height:"24px", backgroundColor:"var(--destaque)", borderStyle:"none", color: "var(--texto-principal)"}}>+</button>
+                                    // Adicionando justify-content: space-between para alinhar texto e botão
+                                    <p className='text-listen' key={type} style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                        
+                                        <span>
+                                            <strong>{type}:</strong> {partName}
+                                        </span>
+                                        {isSelected && (
+                                            <span 
+                                                onClick={() => handleRemovePart(type)} 
+                                                className="remove-part-button" // Usando uma classe para estilizar
+                                                title={`Remover ${type}`}
+                                            >
+                                                <IoIosRemoveCircle />
                                             </span>
                                         )}
                                     </p>
@@ -294,44 +330,41 @@ function Montagem() {
 
 
                     <div className="current-consumption-card">
-                        <h3 className="consumption-title">CONSUMO</h3>
-                        <div className="consumption-header">
-                            <h4>PEÇAS</h4>
-                            <h4>/</h4>
-                            <h4>CAPACIDADE</h4>
-                        </div>
-                        <p>
-                            {totalConsumption}W
+                        <h3 className="consumption-title">CONSUMO ENERGÉTICO</h3>
+                        
+                        <ConsumptionGauge 
+                            value={parseFloat(totalConsumption) || 0} 
+                            max={parseFloat(psuCapacity) || 0} 
+                        />
+
+                        <div className="consumption-summary">
+                            <p className="main-consumption-text">
+                                <strong style={{color: 'var(--texto-principal)'}}>
+                                    {totalConsumption}W
+                                </strong> 
+                                / {psuCapacity > 0 ? `${psuCapacity.toFixed(1)}W` : '??W'}
+                            </p>
+                            
                             {selectedParts['Fonte'] && psuCapacity > 0 ? (
                                 (() => {
                                     const consumo = parseFloat(totalConsumption);
-
-                                    const capacidade = parseFloat(psuCapacity).toFixed(1);
-
                                     const folga = (parseFloat(psuCapacity) - consumo);
-
                                     const corFolga = folga < 0 ? 'var(--erro)' : 'var(--destaque)';
-
-                                    let textoStatus = '';
-                                    let valorExibido = Math.abs(folga).toFixed(1);
-
-                                    if (folga < 0) {
-                                        textoStatus = 'falta';
-                                    } else {
-                                        textoStatus = 'sobrando';
-                                    }
+                                    const textoStatus = folga < 0 ? 'FALTA' : 'SOBRANDO';
+                                    const valorExibido = Math.abs(folga).toFixed(1);
 
                                     return (
-                                        <>
-                                            {` / ${capacidade}W `}
-                                            <span style={{ color: corFolga, fontWeight: 'bold' }}>
-                                                {`(${valorExibido}W ${textoStatus})`}
-                                            </span>
-                                        </>
+                                        <p style={{ margin: 0, fontSize: '1rem', color: corFolga, fontWeight: 'bold' }}>
+                                            {textoStatus} {valorExibido}W
+                                        </p>
                                     );
                                 })()
-                            ) : ''}
-                        </p>
+                            ) : (
+                                <p style={{ margin: 0, fontSize: '1rem', color: 'var(--sub-texto)' }}>
+                                    Selecione uma Fonte
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     <div className="save-button">
