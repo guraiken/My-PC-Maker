@@ -152,8 +152,8 @@ function Montagem() {
     }, [activePart]);
 
     const handleSaveConfig = async () => {
-        if (!selectedParts['Processador'] || !selectedParts['Placa Mãe']) {
-            ErrorAlert({titulo:"Erro", texto:"Você deve selecionar um Processador e uma Placa Mãe antes de salvar.", tempo: 1500});
+        if (!selectedParts['Processador'] || !selectedParts['Placa Mãe' ] || !selectedParts['Placa de Vídeo' ]  || !selectedParts['Memória Ram' ] || !selectedParts['Armazenamento' ] || !selectedParts['Fonte' ]) {
+            ErrorAlert({titulo:"Erro", texto:"Você deve selecionar todas as peças.", tempo: 1500});
             return;
         }
 
